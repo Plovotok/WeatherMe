@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.WeatherActivity"
+    android:background="@drawable/header_background">
+
+
+    <ImageView
+        android:id="@+id/time_image"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <com.github.matteobattilana.weather.WeatherView
+        android:id="@+id/weatherView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        app:fps="60"
+        app:lifeTime="2200"
+        app:fadeOutTime="1500"
+        app:orientationMode="ENABLE"
+        app:numParticles="30"
+        app:startingWeather="RAIN"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/main_container"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/main_nav_graph" />
+
+    <include
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/loading_layout"
+        android:visibility="gone"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

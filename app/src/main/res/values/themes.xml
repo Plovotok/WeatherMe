@@ -1,0 +1,48 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.WeatherMe" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Base.Theme.DvizhDriver" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@color/toolbar_color</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="Base.Theme.MyWeather" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorEdgeEffect">@color/toolbar_color</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+    </style>
+
+    <style name="Base.Theme.WeatherMeFull" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+    </style>
+
+    <style name="Theme.WeatherMe.Fullscreen" parent="Theme.WeatherMe">
+        <item name="android:actionBarStyle">@style/Widget.Theme.WeatherMe.ActionBar.Fullscreen
+        </item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.WeatherMe.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
+
+    <style name="Theme.WeatherMe" parent="Base.Theme.MyWeather" />
+</resources>

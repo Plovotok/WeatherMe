@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/card_background"
+    android:stateListAnimator="@animator/button_press_animator"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+
+        <ImageButton
+            android:id="@+id/weather_info_icon"
+            android:clickable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/weather_info_icon_background"
+            app:srcCompat="@drawable/wind" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/body_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wind speed" />
+
+            <TextView
+                android:id="@+id/value"
+                style="@style/body_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="12km/h" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
