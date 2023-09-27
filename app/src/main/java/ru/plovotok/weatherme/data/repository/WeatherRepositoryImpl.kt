@@ -1,6 +1,8 @@
 package ru.plovotok.weatherme.data.repository
 
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -12,10 +14,9 @@ import io.ktor.client.request.get
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.StringValues
-import io.ktor.util.StringValuesBuilder
 import kotlinx.serialization.json.Json
+import ru.plovotok.weatherme.data.models.LocationResponseDTO
 import ru.plovotok.weatherme.data.models.WeatherResponseDTO
-import ru.plovotok.weatherme.data.repository.KtorUtils.appendRequest
 import ru.plovotok.weatherme.domain.repository.WeatherRepository
 import ru.plovotok.weatherme.presentation.base.Constants
 
@@ -83,5 +84,15 @@ class WeatherRepositoryImpl : WeatherRepository {
             }
         )
 
+    }
+
+    override suspend fun findLocationByQuery(query: String, lang : String): List<LocationResponseDTO?>? {
+        val response = client.get("${Constants.SEARCH_URL}?q=$query&key=eb86f070b9df43f9a6c80906231509&lang=$lang")
+        Log.d("Ktor-client", response.body())
+
+        val json = response.body<String>()
+        val listType = object : TypeToken<List<LocationResponseDTO>>() {}.type
+        val list = Gson().fromJson<List<LocationResponseDTO>>(json, listType)
+        return Gson().fromJson(json, listType)
     }
 }

@@ -6,6 +6,20 @@
     android:background="@color/transparent"
     android:focusableInTouchMode="true">
 
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:src="@drawable/back_button"
+        android:stateListAnimator="@animator/button_press_animator"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/title_textView"
         style="@style/body_medium"
@@ -14,10 +28,11 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:text="Moscow, Russia"
+        android:lines="1"
         android:layout_marginTop="16dp"/>
 
     <ImageView
-        android:id="@+id/search_button"
+        android:id="@+id/add_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
@@ -25,17 +40,18 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
-        android:src="@drawable/search"
+        android:src="@drawable/plus"
         android:stateListAnimator="@animator/button_press_animator"
         android:visibility="visible"
         android:layout_marginTop="16dp"/>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="16dp"
         android:shadowColor="@color/light_blue_A200"
-        android:visibility="gone" />
+        android:visibility="visible" />
+
 </LinearLayout>

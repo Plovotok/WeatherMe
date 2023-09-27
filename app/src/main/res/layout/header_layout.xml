@@ -73,20 +73,20 @@
             android:layout_marginBottom="16dp" />
 
         <TextView
-            android:id="@+id/min_temp"
+            android:id="@+id/max_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="max 20°"
+            android:text="max: 20°"
             style="@style/body_regular"
-            app:layout_constraintBottom_toTopOf="@+id/max_temp"
+            app:layout_constraintBottom_toTopOf="@+id/min_temp"
             app:layout_constraintEnd_toEndOf="@+id/weather_icon"
             android:layout_marginBottom="8dp"/>
 
         <TextView
-            android:id="@+id/max_temp"
+            android:id="@+id/min_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="min 10°"
+            android:text="min: 10°"
             style="@style/body_regular"
             app:layout_constraintBottom_toBottomOf="@+id/date"
             app:layout_constraintEnd_toEndOf="@+id/weather_icon" />

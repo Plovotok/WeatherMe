@@ -87,58 +87,6 @@
 
             </LinearLayout>
 
-            <com.yabu.livechart.view.LiveChart
-                android:id="@+id/chart"
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:nestedScrollingEnabled="true"
-                android:visibility="gone"
-                app:baselineColor="@color/light_blue_A200"
-                app:baselineDashGap="@dimen/cardview_compat_inset_shadow"
-                app:labelTextColor="@color/light_blue_A200"
-                app:overlayLineColor="@color/toolbar_color"
-                app:pathColor="@color/light_blue_A200"
-                app:pathStrokeWidth="2dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/card_background"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="16dp"
-                android:stateListAnimator="@animator/button_press_animator"
-                android:visibility="gone">
-
-                <HorizontalScrollView
-                    android:id="@+id/chart_scroll"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="16dp"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <com.github.mikephil.charting.charts.LineChart
-                            android:id="@+id/lineChart"
-                            android:layout_width="1632dp"
-                            android:layout_height="150dp" />
-                    </LinearLayout>
-                </HorizontalScrollView>
-
-
-            </LinearLayout>
-
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -5,26 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <ru.plovotok.weatherme.presentation.custom.TemperatureView
-        android:id="@+id/temperatureView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="94dp"
         android:layout_gravity="center_horizontal"
         android:layout_height="100dp" />
-
-    <TextView
-        android:id="@+id/avg_temp"
-        style="@style/body_regular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="16°"
-        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/weather_icon"

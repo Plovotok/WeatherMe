@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization'
 //    id 'kotlin-kapt'
 }
+//apply plugin: 'kotlin-kapt'
 
 android {
     namespace 'ru.plovotok.weatherme'
@@ -45,6 +46,7 @@ dependencies {
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def ktor_version= '2.3.2'
+    def room_version = '2.5.1'
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -98,4 +100,10 @@ dependencies {
     implementation 'com.github.jinatonic.confetti:confetti:1.1.2'
     implementation("com.github.MatteoBattilana:WeatherView:3.0.0")
     implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
+
+//    Room
+//    implementation "androidx.room:room-runtime:$room_version"
+//    kapt "androidx.room:room-compiler:$room_version"
+//    implementation "androidx.room:room-ktx:$room_version"
+//    androidTestImplementation "androidx.room:room-testing:$room_version"
 }

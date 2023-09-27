@@ -8,5 +8,16 @@
         android:id="@+id/weatherFragment"
         android:name="ru.plovotok.weatherme.presentation.WeatherFragment"
         android:label="fragment_weather"
-        tools:layout="@layout/fragment_weather" />
+        tools:layout="@layout/fragment_weather" >
+        <action
+            android:id="@+id/action_weatherFragment_to_addLocationFragment"
+            app:destination="@id/addLocationFragment"
+            app:enterAnim="@anim/fragment_enter_anim"
+            app:popExitAnim="@anim/fragment_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addLocationFragment"
+        android:name="ru.plovotok.weatherme.presentation.AddLocationFragment"
+        android:label="fragment_add_location"
+        tools:layout="@layout/fragment_add_location" />
 </navigation>
