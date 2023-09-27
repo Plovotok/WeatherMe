@@ -162,7 +162,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
                         feelsLike.text ="Feels like ${headerInfo?.feelsLike}°"
                         weatherDesc.text = headerInfo?.condition?.text
                         if (headerInfo != null) {
-                            weatherIcon.setImageResource(defineWeatherIconID(iconCode = headerInfo.condition.code, isDay = headerInfo.isDay).iconResource)
+                            weatherIcon.setImageResource(defineWeatherIconID(iconCode = headerInfo.condition!!.code, isDay = headerInfo.isDay).iconResource)
                             (requireActivity() as WeatherActivity).setTimeImage(defineWeatherIconID(iconCode = headerInfo.condition.code, isDay = headerInfo.isDay).backgroundResource)
                             currentCond = headerInfo.condition.code
                         }

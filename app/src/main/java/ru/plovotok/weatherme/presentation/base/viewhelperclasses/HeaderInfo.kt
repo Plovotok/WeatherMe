@@ -7,7 +7,7 @@ data class HeaderInfo(
     val minTemp : Double,
     val maxTemp : Double,
     val feelsLike : Double,
-    val condition : ConditionDTO,
+    val condition : ConditionDTO?,
     val time : String,
     val isDay : Int
 )
