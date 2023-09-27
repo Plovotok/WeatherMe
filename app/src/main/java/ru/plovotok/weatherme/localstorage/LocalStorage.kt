@@ -34,6 +34,8 @@ class LocalStorage(
 
         const val API_TOKEN = "api-token"
         const val LAST_LOCATION = "last-location"
+        const val FAVOURITE_LOCATION = "favourite-location"
+        const val LOCATIONS_LIST = "locations-list"
 
         fun init(context: Context) {
             val sharedPreferences = context.getSharedPreferences(TAG, Context.MODE_PRIVATE)

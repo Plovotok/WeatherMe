@@ -3,9 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization'
 //    id 'kotlin-kapt'
-    id 'org.jetbrains.kotlin.kapt'
+//    id 'org.jetbrains.kotlin.kapt'
 }
-//apply plugin: 'kotlin-kapt'
 
 android {
     namespace 'ru.plovotok.weatherme'
@@ -19,6 +18,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -28,11 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_18
+        targetCompatibility JavaVersion.VERSION_18
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '18'
     }
     buildFeatures {
         viewBinding true
@@ -45,11 +45,9 @@ android {
 
 dependencies {
 
-//    kapt 'groupId:artifactId:version'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def ktor_version= '2.3.2'
-    def room_version = '2.5.1'
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -86,7 +84,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:6.0.0'
 
     implementation 'com.github.bumptech.glide:glide:4.15.1'
-    kapt 'com.github.bumptech.glide:compiler:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
     // Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
@@ -104,9 +102,4 @@ dependencies {
     implementation("com.github.MatteoBattilana:WeatherView:3.0.0")
     implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
 
-//    Room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    androidTestImplementation "androidx.room:room-testing:$room_version"
 }

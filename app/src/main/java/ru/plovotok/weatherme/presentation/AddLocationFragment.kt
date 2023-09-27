@@ -10,26 +10,35 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
-import ru.plovotok.weatherme.data.models.LocationResponseDTO
 import ru.plovotok.weatherme.databinding.FragmentAddLocationBinding
-import ru.plovotok.weatherme.presentation.adapters.LocationsAdapter
+import ru.plovotok.weatherme.domain.models.LocationResponse
+import ru.plovotok.weatherme.presentation.adapters.locations.LocationsAdapter
 import ru.plovotok.weatherme.presentation.base.BaseFragment
 import ru.plovotok.weatherme.presentation.base.UIState
 
 
 class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), LocationsAdapter.LocationItemClickListener {
 
-    private val viewModel : AddLocationViewModel by viewModels()
     private var currentInputString = ""
+    private val viewModel : AddLocationViewModel by viewModels()
 
-    private val locationsAdapter = LocationsAdapter(this)
+    private val serverLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.SERVER_LOCATIONS)
+    private val myLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.MY_LOCATIONS)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getLocationsList()
         collectLocationList()
+        collectMyLocations()
+
 
         with(binding.locationsRv) {
-            adapter = locationsAdapter
+            adapter = serverLocationsAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        }
+
+        with(binding.myLocationsRv) {
+            adapter = myLocationsAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
@@ -99,8 +108,7 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
                 is UIState.Success -> {
                     hideLoading()
                     if(!state.data.isNullOrEmpty()) {
-                        locationsAdapter.loadItems(items = state.data as List<LocationResponseDTO>)
-                        locationsAdapter.notifyDataSetChanged()
+                        serverLocationsAdapter.difLoadItems(items = state.data as List<LocationResponse>)
                     } else {
                         showToast("Не найдено")
                     }
@@ -112,12 +120,32 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         }
     }
 
+    private fun collectMyLocations() = viewLifecycleOwner.lifecycleScope.launch {
+        viewModel.myLocations.collect { state ->
+            when(state) {
+                is UIState.Success -> {
+                    if (!state.data.isNullOrEmpty()) {
+                        myLocationsAdapter.difLoadItems(state.data)
+                    }
+                }
+                else -> {}
+            }
+        }
+    }
+
     companion object {
         private const val REQUEST_INTERVAL_MILLIS = 700L
     }
 
-    override fun onItemClick(item: LocationResponseDTO) {
+    override fun onItemAdd(item: LocationResponse) {
         showToast("${item.name} добавлено")
+
+        viewModel.addLocationToList(item)
+        viewModel.getLocationsList()
+    }
+
+    override fun onItemRemove(item: LocationResponse) {
+        viewModel.removeLocation(item)
     }
 
 }

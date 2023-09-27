@@ -46,10 +46,20 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/remove_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/minus_blue"
+        android:stateListAnimator="@animator/button_press_animator"
+        android:visibility="gone" />
+
+    <ImageView
         android:id="@+id/add_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/plus_blue"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:stateListAnimator="@animator/button_press_animator"/>
 
 </LinearLayout>

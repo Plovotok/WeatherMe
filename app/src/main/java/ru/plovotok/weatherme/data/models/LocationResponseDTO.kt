@@ -2,6 +2,7 @@ package ru.plovotok.weatherme.data.models
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
+import ru.plovotok.weatherme.domain.models.LocationResponse
 
 @Serializable
 data class LocationResponseDTO(
@@ -17,4 +18,8 @@ data class LocationResponseDTO(
     val lat : Double,
     @SerializedName("lon")
     val lon : Double
-)
+) {
+    fun toModel() = LocationResponse(
+        id, name, region, country, lat, lon
+    )
+}

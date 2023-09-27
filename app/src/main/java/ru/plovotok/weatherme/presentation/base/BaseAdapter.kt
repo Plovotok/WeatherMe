@@ -30,6 +30,8 @@ abstract class BaseAdapter <ItemVB: ViewBinding, Item: Any?> (
         this.items = oldItems + newItems
     }
 
+    open fun difLoadItems(items : List<Item>){}
+
     fun getItems() = items
 
     override fun getItemCount(): Int = getItems().size

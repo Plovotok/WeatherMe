@@ -20,4 +20,5 @@ class WeatherApplication : Application() {
 
         LocalStorage.init(applicationContext)
     }
+
 }
