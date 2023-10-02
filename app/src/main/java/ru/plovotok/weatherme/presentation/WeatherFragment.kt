@@ -8,9 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.launch
-import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
-import me.everything.android.ui.overscroll.adapters.ScrollViewOverScrollDecorAdapter
 import ru.plovotok.weatherme.R
 import ru.plovotok.weatherme.databinding.ChanceOfRainItemLayoutBinding
 import ru.plovotok.weatherme.databinding.FragmentWeatherBinding
@@ -46,7 +45,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
             title = "Moscow, Russia",
             backButtonEnabled = false,
             addButtonEnabled = true,
-            switchEnabled = true)
+            switchEnabled = false)
         binding.toolbar.addButton.setOnClickListener {
             findNavController().navigate(R.id.action_weatherFragment_to_addLocationFragment)
         }
@@ -90,9 +89,15 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 //        OverScrollDecoratorHelper.setUpOverScroll(binding.hourlyForecastRv, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
 //        OverScrollDecoratorHelper.setUpOverScroll(binding.rainChanceRv, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
 //        VerticalOverScrollBounceEffectDecorator(RecyclerViewOverScrollDecorAdapter(binding.rainChanceRv))
-        VerticalOverScrollBounceEffectDecorator(ScrollViewOverScrollDecorAdapter(binding.rootScroll))
+//        VerticalOverScrollBounceEffectDecorator(ScrollViewOverScrollDecorAdapter(binding.rootScroll))
 
         binding.rainChanceRv.edgeEffectFactory = BaseEdgeEffectFactory<ChanceOfRainItemLayoutBinding, ChanceOfPrecipitaion>()
+        binding.rootScroll.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
+            override fun onRefresh() {
+                viewModel.getWeather()
+            }
+
+        })
 
 
         collectSunState()
@@ -156,7 +161,9 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
             when(state) {
                 is UIState.Success -> {
                     hideLoading()
+                    binding.rootScroll.isRefreshing = false
                     val headerInfo = state.data
+                    binding.toolbar.titleTextView.text = headerInfo?.location
                     with(binding.head) {
                         avgTemp.text = "${headerInfo?.currentTemp}°"
                         feelsLike.text ="Feels like ${headerInfo?.feelsLike}°"

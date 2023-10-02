@@ -1,10 +1,13 @@
 package ru.plovotok.weatherme.presentation.base
 
 import android.util.Log
+import androidx.annotation.DrawableRes
 import ru.plovotok.weatherme.R
 
 data class ScreenWeather(
+    @DrawableRes
     val iconResource : Int,
+    @DrawableRes
     val backgroundResource : Int
 )
 

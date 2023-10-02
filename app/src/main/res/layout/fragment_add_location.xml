@@ -39,21 +39,43 @@
                 android:inputType="text"
                 android:drawableLeft="@drawable/location"/>
 
+            <TextView
+                android:id="@+id/loc_not_found_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Not found"
+                style="@style/body_regular"
+                android:textColor="@color/gray"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:visibility="gone"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/locations_rv"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginTop="16dp"
                 tools:listitem="@layout/location_item_layout"
-                tools:itemCount="3"/>
+                tools:itemCount="3"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="My locations"
+                style="@style/body_medium"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/my_locations_rv"
                 android:layout_width="match_parent"
+                android:overScrollMode="never"
                 android:layout_height="300dp"
                 android:layout_marginTop="16dp"
-                tools:listitem="@layout/location_item_layout"
-                tools:itemCount="3"/>
+                tools:listitem="@layout/location_item_layout" />
 
 
         </LinearLayout>

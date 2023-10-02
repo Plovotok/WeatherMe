@@ -1,5 +1,7 @@
 package ru.plovotok.weatherme
 
+import android.util.Log
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +11,7 @@ import ru.plovotok.weatherme.data.models.LocationResponseDTO
 import ru.plovotok.weatherme.data.models.WeatherResponseDTO
 import ru.plovotok.weatherme.data.repository.WeatherRepositoryImpl
 import ru.plovotok.weatherme.domain.repository.WeatherRepository
+import ru.plovotok.weatherme.localstorage.LocalStorage
 
 class WeatherService {
 
@@ -22,12 +25,23 @@ class WeatherService {
 
     private val repository : WeatherRepository = WeatherRepositoryImpl()
 
+    private val localStorage = LocalStorage.newInstance()
+
     fun getWeatherFlow() = weatherFlow
 
     fun getLocationListFlow() = locationListFlow
 
-    private fun getWeatherByQuery() = getWeatherScope.launch {
-        val weather = repository.getWeatherByQuery()
+    fun getWeatherByQuery() = getWeatherScope.launch {
+        val locationJson = localStorage.get(LocalStorage.FAVOURITE_LOCATION)
+        Log.d("Ktor-client", "favourite location: $locationJson")
+        var query = "Moscow"
+        if (locationJson != null) {
+            val location = Gson().fromJson(locationJson, LocationResponseDTO::class.java)
+            query = "${location.lat},${location.lon}"
+        } else {
+            query = "Moscow"
+        }
+        val weather = repository.getWeatherByQuery(q = query)
         _weatherFlow.emit(weather)
     }
 

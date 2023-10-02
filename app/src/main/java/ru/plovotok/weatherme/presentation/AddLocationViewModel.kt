@@ -54,8 +54,11 @@ class AddLocationViewModel : BaseViewModel() {
         if (json != null) {
             val listType = object : TypeToken<List<LocationResponseDTO>>() {}.type
             val list = Gson().fromJson<List<LocationResponseDTO>>(json, listType).toMutableList()
-            list.add(location.toDTO())
-            localStorage.save(LocalStorage.LOCATIONS_LIST, list.toJson())
+            if (!list.contains(location.toDTO())) {
+                list.add(location.toDTO())
+                localStorage.save(LocalStorage.LOCATIONS_LIST, list.toJson())
+            }
+
         } else {
             val list : MutableList<LocationResponseDTO> = mutableListOf()
             list.add(location.toDTO())
@@ -79,7 +82,7 @@ class AddLocationViewModel : BaseViewModel() {
 
     fun setLocationAsFavourite(location : LocationResponse) {
         val localStorage = LocalStorage.newInstance()
-        localStorage.save(LocalStorage.FAVOURITE_LOCATION, location.region)
+        localStorage.save(LocalStorage.FAVOURITE_LOCATION, location.toJson())
     }
 
 }

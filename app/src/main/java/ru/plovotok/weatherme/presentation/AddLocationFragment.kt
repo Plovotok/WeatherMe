@@ -1,5 +1,6 @@
 package ru.plovotok.weatherme.presentation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.databinding.FragmentAddLocationBinding
 import ru.plovotok.weatherme.domain.models.LocationResponse
@@ -108,9 +110,11 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
                 is UIState.Success -> {
                     hideLoading()
                     if(!state.data.isNullOrEmpty()) {
+                        binding.locNotFoundTv.visibility = View.GONE
+                        binding.locationsRv.visibility = View.VISIBLE
                         serverLocationsAdapter.difLoadItems(items = state.data as List<LocationResponse>)
                     } else {
-                        showToast("Не найдено")
+                        binding.locNotFoundTv.visibility = View.VISIBLE
                     }
 
                 }
@@ -146,6 +150,28 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
 
     override fun onItemRemove(item: LocationResponse) {
         viewModel.removeLocation(item)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onItemFavourite(item: LocationResponse) {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            while (binding.myLocationsRv.isComputingLayout) delay(100L)
+
+        }
+
+        val dialog = SetAsFavouriteLocationFragment(location = item, dialogListener = object : SetAsFavouriteLocationFragment.DialogListener {
+            override fun onConfirm() {
+                viewModel.setLocationAsFavourite(item)
+            }
+
+            override fun onDismiss() {
+
+            }
+
+        })
+        dialog.show(childFragmentManager, "SetAsFavouriteDialog")
+
     }
 
 }

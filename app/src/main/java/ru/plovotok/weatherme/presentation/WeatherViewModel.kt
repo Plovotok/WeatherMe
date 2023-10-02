@@ -34,6 +34,8 @@ class WeatherViewModel : BaseViewModel() {
     private val weatherFlow = weatherService.getWeatherFlow()
 
     fun getWeather() = vms.launch(dio) {
+        weatherService.getWeatherByQuery()
+
         _precipitationChances.loading()
         _hourlyForecast.loading()
         _weatherInfo.loading()
@@ -42,6 +44,7 @@ class WeatherViewModel : BaseViewModel() {
         weatherFlow.collect { weather ->
             if (weather != null) {
 
+                val location = weather.location
                 val forecast = weather.getTodayForecast()
                 val current = weather.current
                 val twoDaysForecast = weather.get2DaysForecast()
@@ -81,6 +84,7 @@ class WeatherViewModel : BaseViewModel() {
                 delay(1000L)
 
                 _headerInfo.success(data = HeaderInfo(
+                    location = "${location.name}, ${location.country}",
                     currentTemp = current.temp,
                     minTemp = weather.forecast.forecastDay[0].day.minTemp,
                     maxTemp = weather.forecast.forecastDay[0].day.maxTemp,

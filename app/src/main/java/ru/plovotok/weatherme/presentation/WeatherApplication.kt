@@ -11,14 +11,14 @@ class WeatherApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        LocalStorage.init(applicationContext)
         KtorClient.initialize(
             host = "api.weatherapi.com/v1",
             path = "forecast.json",
             protocol = URLProtocol.HTTPS
         )
         WeatherService.initialize()
-
-        LocalStorage.init(applicationContext)
+        
     }
 
 }

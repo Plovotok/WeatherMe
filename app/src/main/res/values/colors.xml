@@ -14,4 +14,7 @@
     <color name="background_main">#F6EDFF</color>
     <color name="weather_info_icon">#0082DF</color>
     <color name="toolbar_color">#BF9FC1F4</color>
+
+    <color name="agree_button_color">#0082DF</color>
+    <color name="disagree_button_color">#343538</color>
 </resources>

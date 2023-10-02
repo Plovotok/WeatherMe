@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button"
+        style="@style/body_regular"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/button_background"
+        android:gravity="center"
+        android:stateListAnimator="@animator/button_press_animator"
+        android:text="Select"
+        android:textAlignment="center"
+        android:textAllCaps="false" />
+
+</LinearLayout>

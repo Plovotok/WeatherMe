@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ru.plovotok.weatherme.R
+import ru.plovotok.weatherme.databinding.WeatherInfoItemLayoutBinding
 import ru.plovotok.weatherme.presentation.base.BaseAdapter
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.WeatherInfo
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.WeatherInfoType
-import ru.plovotok.weatherme.databinding.WeatherInfoItemLayoutBinding
 
 class WeatherInfoAdapter : BaseAdapter<WeatherInfoItemLayoutBinding, WeatherInfo>() {
     override fun createViewHolder(parent: ViewGroup): BaseViewHolder {
@@ -38,7 +38,8 @@ class WeatherInfoAdapter : BaseAdapter<WeatherInfoItemLayoutBinding, WeatherInfo
                         binding.value.text = "${item.value.toInt()} $valueDimension"
                     }
                     WeatherInfoType.HUMIDITY -> {
-                        setImageResource(R.drawable.rain_chance)
+//                        setImageResource(R.drawable.rain_chance)
+                        setImageResource(R.drawable.humidity)
                         valueDimension = "%"
                         binding.value.text = "${item.value.toInt()} $valueDimension"
                     }

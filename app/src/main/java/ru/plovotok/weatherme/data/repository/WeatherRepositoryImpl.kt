@@ -12,9 +12,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.client.statement.request
-import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.util.StringValues
 import kotlinx.serialization.json.Json
 import ru.plovotok.weatherme.data.models.LocationResponseDTO
 import ru.plovotok.weatherme.data.models.WeatherResponseDTO
@@ -31,6 +29,8 @@ class WeatherRepositoryImpl : WeatherRepository {
         install(ContentNegotiation) { json(Json {
             ignoreUnknownKeys = true
             coerceInputValues = false
+            prettyPrint = true
+            isLenient = true
         })}
 
 
@@ -61,37 +61,11 @@ class WeatherRepositoryImpl : WeatherRepository {
         return weatherResponse
     }
 
-    override suspend fun getWeather(): WeatherResponseDTO? {
-
-//        return client.get {
-//            appendRequest(_host = "api.weatherapi.com/v1", _protocol = URLProtocol.HTTPS, path = "/forecast.json", stringValues = StringValues.build {
-//                append("key", Constants.API_KEY)
-//                append("q", "moscow")
-//                append("days", "2")
-//                append("aqi", "no")
-//                append("alerts", "no")
-//            })
-//        }.body()
-
-        return KtorClient.getSafely(
-            host = "api.weatherapi.com",
-            protocol = URLProtocol.HTTP,
-            path = "/v1/forecast.json",
-            stringValues = StringValues.build {
-                append("q", "Moscow")
-                append("key", Constants.API_KEY)
-                append("days", "2")
-                append("aqi", "no")
-                append("alerts", "no")
-            }
-        )
-
-    }
-
     override suspend fun findLocationByQuery(query: String, lang : String): List<LocationResponseDTO?>? {
         Log.d("Ktor-client", "$query, $lang")
-        val response = client.get("${Constants.SEARCH_URL}?q=$query&key=eb86f070b9df43f9a6c80906231509&lang=$lang")
-//        Log.d("Ktor-client", response.body())
+        val response = client.get("${Constants.SEARCH_URL}?q=$query&lang=$lang&key=eb86f070b9df43f9a6c80906231509")
+        Log.d("Ktor-client", response.request.url.encodedPathAndQuery)
+        Log.d("Ktor-client", response.body())
 //        Log.d("Ktor-client", response.request.toString())
 
         val json = response.body<String>()

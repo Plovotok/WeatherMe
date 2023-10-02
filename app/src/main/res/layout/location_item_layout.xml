@@ -62,4 +62,15 @@
         android:layout_gravity="center_vertical"
         android:stateListAnimator="@animator/button_press_animator"/>
 
+    <ImageView
+        android:id="@+id/favourite_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/like"
+        android:layout_marginHorizontal="8dp"
+        android:layout_gravity="center_vertical"
+        android:stateListAnimator="@animator/button_press_animator"
+        android:visibility="gone"/>
+
+
 </LinearLayout>
