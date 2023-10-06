@@ -9,8 +9,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.github.matteobattilana.weather.PrecipType
-import com.github.matteobattilana.weather.WeatherViewSensorEventListener
 import ru.plovotok.weatherme.databinding.ActivityWeatherBinding
 
 class WeatherActivity : AppCompatActivity() {

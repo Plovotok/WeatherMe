@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization'
-//    id 'kotlin-kapt'
+    id 'kotlin-kapt'
 //    id 'org.jetbrains.kotlin.kapt'
 }
 
@@ -96,10 +96,15 @@ dependencies {
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
 
     implementation 'com.github.jinatonic.confetti:confetti:1.1.2'
     implementation("com.github.MatteoBattilana:WeatherView:3.0.0")
     implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
 
+    def room_version = "2.5.2"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation 'androidx.room:room-ktx:2.5.2'
+    kapt "androidx.room:room-compiler:$room_version"
 }

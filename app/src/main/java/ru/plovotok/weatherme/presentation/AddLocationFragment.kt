@@ -6,7 +6,6 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +21,10 @@ import ru.plovotok.weatherme.presentation.base.UIState
 class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), LocationsAdapter.LocationItemClickListener {
 
     private var currentInputString = ""
-    private val viewModel : AddLocationViewModel by viewModels()
+//    private val viewModel : AddLocationViewModel by viewModels()
+    private val viewModel : AddLocationViewModel by lazy {
+        AddLocationViewModel((requireActivity().application as WeatherApplication).repository)
+}
 
     private val serverLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.SERVER_LOCATIONS)
     private val myLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.MY_LOCATIONS)
@@ -150,6 +152,7 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
 
     override fun onItemRemove(item: LocationResponse) {
         viewModel.removeLocation(item)
+        viewModel.getLocationsList()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -163,6 +166,7 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         val dialog = SetAsFavouriteLocationFragment(location = item, dialogListener = object : SetAsFavouriteLocationFragment.DialogListener {
             override fun onConfirm() {
                 viewModel.setLocationAsFavourite(item)
+                findNavController().popBackStack()
             }
 
             override fun onDismiss() {
