@@ -147,12 +147,10 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         showToast("${item.name} добавлено")
 
         viewModel.addLocationToList(item)
-        viewModel.getLocationsList()
     }
 
     override fun onItemRemove(item: LocationResponse) {
         viewModel.removeLocation(item)
-        viewModel.getLocationsList()
     }
 
     @SuppressLint("NotifyDataSetChanged")

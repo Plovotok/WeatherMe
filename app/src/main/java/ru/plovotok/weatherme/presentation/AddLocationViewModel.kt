@@ -87,6 +87,7 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
             lat = location.lat, lon = location.lon
         )
         repository.addLocation(entity)
+        getLocationsList()
     }
 
     fun removeLocation(location : LocationResponse) = vms.launch {
@@ -103,6 +104,8 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
 
         Log.d("Room", "deleting ${location.name}")
         repository.removeLocationById(location.id)
+
+        getLocationsList()
     }
 
     fun setLocationAsFavourite(location : LocationResponse) {
