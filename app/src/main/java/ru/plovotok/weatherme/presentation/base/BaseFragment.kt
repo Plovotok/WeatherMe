@@ -1,5 +1,7 @@
 package ru.plovotok.weatherme.presentation.base
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.databinding.ToolbarLayoutBinding
@@ -53,6 +56,15 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     fun showToast(text: String) {
         Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showSnack(text : String) {
+        val color = Color.parseColor("#B20082DF")
+        val snackbar = Snackbar.make(requireView(), text, Snackbar.LENGTH_SHORT)
+        snackbar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
+        snackbar.setBackgroundTint(color)
+        snackbar.setBackgroundTintMode(PorterDuff.Mode.SCREEN)
+        snackbar.show()
     }
     fun setToolbar(
         toolbar : ToolbarLayoutBinding,

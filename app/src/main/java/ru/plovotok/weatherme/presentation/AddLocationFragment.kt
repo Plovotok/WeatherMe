@@ -1,8 +1,6 @@
 package ru.plovotok.weatherme.presentation
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -11,7 +9,6 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.databinding.FragmentAddLocationBinding
@@ -19,6 +16,7 @@ import ru.plovotok.weatherme.domain.models.LocationResponse
 import ru.plovotok.weatherme.presentation.adapters.locations.LocationsAdapter
 import ru.plovotok.weatherme.presentation.base.BaseFragment
 import ru.plovotok.weatherme.presentation.base.UIState
+import ru.plovotok.weatherme.presentation.ext.hasCyrillic
 
 
 class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), LocationsAdapter.LocationItemClickListener {
@@ -27,7 +25,7 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
 //    private val viewModel : AddLocationViewModel by viewModels()
     private val viewModel : AddLocationViewModel by lazy {
         AddLocationViewModel((requireActivity().application as WeatherApplication).repository)
-}
+    }
 
     private val serverLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.SERVER_LOCATIONS)
     private val myLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.MY_LOCATIONS)
@@ -94,17 +92,6 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         })
     }
 
-    private fun String.hasCyrillic(): Boolean {
-        for (char in this) {
-            if (char.isLetter() && char.isUpperCase() && char in 'А'..'Я') {
-                return true
-            } else if (char.isLetter() && char.isLowerCase() && char in 'а'..'я') {
-                return true
-            }
-        }
-        return false
-    }
-
     override fun getViewBinding(): FragmentAddLocationBinding {
         return FragmentAddLocationBinding.inflate(layoutInflater)
     }
@@ -147,23 +134,13 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
     }
 
     override fun onItemAdd(item: LocationResponse) {
-        val color = Color.parseColor("#B20082DF")
-        val snackbar = Snackbar.make(requireView(), "${item.name} добавлено", Snackbar.LENGTH_SHORT)
-        snackbar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
-        snackbar.setBackgroundTint(color)
-        snackbar.setBackgroundTintMode(PorterDuff.Mode.SCREEN)
-        snackbar.show()
+        showSnack("${item.name} добавлено")
 
         viewModel.addLocation(item)
     }
 
     override fun onItemRemove(item: LocationResponse) {
-        val color = Color.parseColor("#B20082DF")
-        val snackbar = Snackbar.make(requireView(), "${item.name} удалено", Snackbar.LENGTH_SHORT)
-        snackbar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
-        snackbar.setBackgroundTint(color)
-        snackbar.setBackgroundTintMode(PorterDuff.Mode.SCREEN)
-        snackbar.show()
+        showSnack("${item.name} удалено")
 
         viewModel.removeLocation(item)
     }

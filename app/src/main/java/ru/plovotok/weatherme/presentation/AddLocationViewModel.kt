@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.WeatherService
-import ru.plovotok.weatherme.data.models.roommodels.WeatherLocationEntity
 import ru.plovotok.weatherme.data.repository.JsonUtils.toJson
 import ru.plovotok.weatherme.data.repository.LocationsRepository
 import ru.plovotok.weatherme.domain.models.LocationResponse
@@ -41,12 +40,8 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
     }
 
     fun addLocation(location: LocationResponse) = vms.launch(dio) {
-        val entity = WeatherLocationEntity(
-            remoteId = location.id, name = location.name,
-            region = location.region, country = location.country,
-            lat = location.lat, lon = location.lon
-        )
-        repository.addLocation(entity)
+        Log.d("Room", "adding ${location.name}")
+        repository.addLocation(location.toDBEntity())
         getLocationsList()
     }
 
