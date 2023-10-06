@@ -1,6 +1,8 @@
 package ru.plovotok.weatherme.presentation
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -9,6 +11,7 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.databinding.FragmentAddLocationBinding
@@ -144,12 +147,24 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
     }
 
     override fun onItemAdd(item: LocationResponse) {
-        showToast("${item.name} добавлено")
+        val color = Color.parseColor("#B20082DF")
+        val snackbar = Snackbar.make(requireView(), "${item.name} добавлено", Snackbar.LENGTH_SHORT)
+        snackbar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
+        snackbar.setBackgroundTint(color)
+        snackbar.setBackgroundTintMode(PorterDuff.Mode.SCREEN)
+        snackbar.show()
 
-        viewModel.addLocationToList(item)
+        viewModel.addLocation(item)
     }
 
     override fun onItemRemove(item: LocationResponse) {
+        val color = Color.parseColor("#B20082DF")
+        val snackbar = Snackbar.make(requireView(), "${item.name} удалено", Snackbar.LENGTH_SHORT)
+        snackbar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
+        snackbar.setBackgroundTint(color)
+        snackbar.setBackgroundTintMode(PorterDuff.Mode.SCREEN)
+        snackbar.show()
+
         viewModel.removeLocation(item)
     }
 

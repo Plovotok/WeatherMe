@@ -12,8 +12,10 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:colorEdgeEffect">@color/toolbar_color</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="snackbarTextViewStyle">@style/snackbar_body_regular</item>
 
     </style>
+
 
     <style name="Base.Theme.WeatherMeFull" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>

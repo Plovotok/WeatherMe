@@ -2,10 +2,11 @@ package ru.plovotok.weatherme.data.models.roommodels
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.plovotok.weatherme.domain.models.LocationResponse
 
-@Entity(tableName = "locations")
+@Entity(tableName = "locations", indices = [Index(value = ["remote_id"], unique = true)])
 data class WeatherLocationEntity(
     @PrimaryKey(autoGenerate = true) val id : Int = 0,
     @ColumnInfo(name = "remote_id") val remoteId : Int,

@@ -17,6 +17,6 @@ interface WeatherLocationsDao {
     @Query("DELETE FROM locations WHERE remote_id = :id ")
     suspend fun deleteLocationById(id : Int)
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addLocation(location : WeatherLocationEntity)
 }

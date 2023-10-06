@@ -25,11 +25,6 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
 
     private val locationListFlow = weatherService.getLocationListFlow()
 
-//    init {
-//        repository.getLocations()
-//    }
-
-
     fun getLocationListByQuery(query : String, lang : String = "en") = vms.launch(dio) {
         _locationList.loading()
         weatherService.getLocationListByQuery(query, lang)
@@ -39,44 +34,9 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
     }
 
     fun getLocationsList() = vms.launch(dio){
-//        _myLocations.loading()
-//        val localStorage = LocalStorage.newInstance()
-//        val json = localStorage.get(LocalStorage.LOCATIONS_LIST)
-//        if (json != null) {
-//            val listType = object : TypeToken<List<LocationResponseDTO>>() {}.type
-//            val list = Gson().fromJson<List<LocationResponseDTO>>(json, listType)
-//            _myLocations.success(data = list.map { it.toModel() })
-//        } else {
-//            _myLocations.success(data = mutableListOf())
-//        }
         _myLocations.loading()
         val locList = repository.getLocations()
         _myLocations.success(data = locList?.map { it.toModel() })
-
-//        repository.locationsFlow.collect { list ->
-//
-//            _myLocations.success(data = list?.map { it.toModel() })
-//        }
-    }
-
-    fun addLocationToList(location : LocationResponse) {
-//        val localStorage = LocalStorage.newInstance()
-//        val json = localStorage.get(LocalStorage.LOCATIONS_LIST)
-//        if (json != null) {
-//            val listType = object : TypeToken<List<LocationResponseDTO>>() {}.type
-//            val list = Gson().fromJson<List<LocationResponseDTO>>(json, listType).toMutableList()
-//            if (!list.contains(location.toDTO())) {
-//                list.add(location.toDTO())
-//                localStorage.save(LocalStorage.LOCATIONS_LIST, list.toJson())
-//            }
-//
-//        } else {
-//            val list : MutableList<LocationResponseDTO> = mutableListOf()
-//            list.add(location.toDTO())
-//            localStorage.save(LocalStorage.LOCATIONS_LIST, list.toJson())
-//        }
-
-        addLocation(location)
 
     }
 
@@ -91,16 +51,6 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
     }
 
     fun removeLocation(location : LocationResponse) = vms.launch {
-//        _myLocations.loading()
-//        val localStorage = LocalStorage.newInstance()
-//        val json = localStorage.get(LocalStorage.LOCATIONS_LIST)
-//        if (json != null) {
-//            val listType = object : TypeToken<List<LocationResponseDTO>>() {}.type
-//            val list = Gson().fromJson<List<LocationResponseDTO>>(json, listType).toMutableList()
-//            list.remove(location.toDTO())
-//            localStorage.save(LocalStorage.LOCATIONS_LIST, list.toJson())
-//            _myLocations.success(data = list.map { it.toModel() })
-//        }
 
         Log.d("Room", "deleting ${location.name}")
         repository.removeLocationById(location.id)
