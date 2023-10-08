@@ -53,6 +53,7 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         }
         binding.toolbar.addButton.visibility = View.GONE
         binding.toolbar.switch1.visibility = View.GONE
+        binding.toolbar.testButton.visibility = View.GONE
 
         val timer = object : CountDownTimer(REQUEST_INTERVAL_MILLIS, 100L) {
             override fun onTick(millisUntilFinished: Long) {

@@ -1,7 +1,9 @@
 package ru.plovotok.weatherme.presentation
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -37,12 +39,18 @@ class WeatherFragment(private val location : String? = null) : BaseFragment<Frag
     private var currentCond = 0
     private var nowIsDay : Int? = null
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getWeather(location)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onResume() {
         Log.i("Weather-Fragment", "${location} onResume()")
         super.onResume()
 //        super.onViewCreated(view, savedInstanceState)
-        viewModel.getWeather(location)
+
 
         binding.rootScroll.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.agree_button_color))
 

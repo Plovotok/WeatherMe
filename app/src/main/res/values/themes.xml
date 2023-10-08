@@ -37,5 +37,10 @@
         <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 
+    <style name="BlueCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlNormal">@color/weather_info_icon</item>
+        <item name="colorControlActivated">@color/weather_info_icon</item>
+    </style>
+
     <style name="Theme.WeatherMe" parent="Base.Theme.MyWeather" />
 </resources>

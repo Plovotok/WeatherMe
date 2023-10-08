@@ -7,10 +7,11 @@ import ru.plovotok.weatherme.presentation.WeatherFragment
 class WeatherLocationsPagerAdapter(private val locationsList: List<String?>, fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int {
-        return locationsList.size ?: 1
+        return locationsList.size
     }
 
     override fun createFragment(position: Int): WeatherFragment {
-        return WeatherFragment.newInstance(locationsList[position])
+        return WeatherFragment(locationsList[position])
+//        return WeatherFragment.newInstance(locationsList[position])
     }
 }
