@@ -13,7 +13,7 @@ import com.github.mikephil.charting.model.GradientColor
 import ru.plovotok.weatherme.R
 import ru.plovotok.weatherme.databinding.HourInfoItemLayoutBinding
 import ru.plovotok.weatherme.presentation.base.BaseAdapter
-import ru.plovotok.weatherme.presentation.base.defineWeatherIconID
+import ru.plovotok.weatherme.presentation.base.defineWeatherByCondition
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.HourForecast
 
 class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecast>() {
@@ -37,7 +37,7 @@ class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecas
             } else {
                 binding.time.text = item.time.split(" ").last()
             }
-            val imageResource = defineWeatherIconID(iconCode = item.code, isDay = item.isDay).iconResource
+            val imageResource = defineWeatherByCondition(iconCode = item.code, isDay = item.isDay).iconResource
             binding.weatherIcon.setImageResource(imageResource)
 
             customizeDataSet()

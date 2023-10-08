@@ -9,7 +9,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.github.matteobattilana.weather.PrecipType
 import ru.plovotok.weatherme.databinding.ActivityWeatherBinding
+import ru.plovotok.weatherme.presentation.base.PrecipRate
+import ru.plovotok.weatherme.presentation.base.TypeOfPrecip
 
 class WeatherActivity : AppCompatActivity() {
 
@@ -56,8 +59,8 @@ class WeatherActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    fun setTimeImage(imageId : Int){
-//        binding.timeImage.setImageResource(imageId)
+    fun setTimeImage(imageId : Int, precipType: TypeOfPrecip, rate : PrecipRate){
+
 
         Glide.with(this)
             .load(imageId)
@@ -65,9 +68,70 @@ class WeatherActivity : AppCompatActivity() {
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(binding.timeImage)
 
-//        binding.weatherView.speed = 2200
-//        binding.weatherView.precipType = PrecipType.RAIN
-//        binding.weatherView.fadeOutPercent = 100f
-//        binding.weatherView.resetWeather()
+//        val drawable = ContextCompat.getDrawable(applicationContext, R.drawable.like)
+//        val bitmap =
+//            drawable?.let { Bitmap.createBitmap((it.intrinsicWidth*0.2).toInt(), (drawable.intrinsicHeight*0.2).toInt(), Bitmap.Config.ARGB_8888) }
+//
+//        val canvas = Canvas(bitmap!!)
+//        drawable.setBounds(0, 0, canvas.width, canvas.height)
+//        drawable.draw(canvas)
+
+        when(precipType) {
+            TypeOfPrecip.CLEAR -> binding.weatherView.setWeatherData(PrecipType.CLEAR)
+            TypeOfPrecip.RAIN -> binding.weatherView.setWeatherData(PrecipType.RAIN)
+            TypeOfPrecip.SNOW -> binding.weatherView.setWeatherData(PrecipType.SNOW)
+        }
+
+        when(rate) {
+            PrecipRate.CLEAR -> {}
+            PrecipRate.LIGHT -> {
+                with(binding.weatherView) {
+                    fadeOutPercent = 0.6f
+                    scaleFactor = 2f
+                    emissionRate = 100f
+                    speed = 1000
+                    resetWeather()
+                }
+            }
+            PrecipRate.MEDIUM -> {
+                with(binding.weatherView) {
+                    fadeOutPercent = 0.6f
+                    scaleFactor = 2f
+                    emissionRate = 200f
+                    speed = 1500
+                    resetWeather()
+                }
+            }
+            PrecipRate.HARD -> {
+                with(binding.weatherView) {
+                    fadeOutPercent = 0.7f
+                    scaleFactor = 3f
+                    emissionRate = 120f
+                    speed = 2200
+                    resetWeather()
+                }
+            }
+        }
+
+//        if (isShowPrecipitation) {
+//            with(binding.weatherView) {
+//            angle = -30
+//                fadeOutPercent = 0.8f
+//                scaleFactor = 4f
+//                setWeatherData(PrecipType.RAIN)
+//                scaleFactor = 4f
+//                emissionRate = 200f
+//                speed = 3000
+//                speed = 1000
+//            setCustomBitmap(bitmap)
+//                resetWeather()
+//            }
+//        } else {
+//            with(binding.weatherView) {
+//                setWeatherData(PrecipType.CLEAR)
+//                resetWeather()
+//            }
+//        }
+
     }
 }

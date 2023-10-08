@@ -14,10 +14,18 @@
             app:destination="@id/addLocationFragment"
             app:enterAnim="@anim/fragment_enter_anim"
             app:popExitAnim="@anim/fragment_exit_anim"/>
+        <action
+            android:id="@+id/action_weatherFragment_to_commonWeatherFragment"
+            app:destination="@id/commonWeatherFragment" />
     </fragment>
     <fragment
         android:id="@+id/addLocationFragment"
         android:name="ru.plovotok.weatherme.presentation.AddLocationFragment"
         android:label="fragment_add_location"
         tools:layout="@layout/fragment_add_location" />
+    <fragment
+        android:id="@+id/commonWeatherFragment"
+        android:name="ru.plovotok.weatherme.presentation.CommonWeatherFragment"
+        android:label="fragment_common_weather"
+        tools:layout="@layout/fragment_common_weather" />
 </navigation>

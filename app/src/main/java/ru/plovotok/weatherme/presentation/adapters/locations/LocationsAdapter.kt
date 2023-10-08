@@ -3,6 +3,7 @@ package ru.plovotok.weatherme.presentation.adapters.locations
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.Gson
 import ru.plovotok.weatherme.R
@@ -13,6 +14,8 @@ import ru.plovotok.weatherme.localstorage.LocalStorage
 import ru.plovotok.weatherme.presentation.base.BaseAdapter
 
 class LocationsAdapter(private val listener : LocationItemClickListener, private val type : Type) : BaseAdapter<LocationItemLayoutBinding, LocationResponse>() {
+
+    private var isEditing = false
 
     private val currentFavouriteLocationJson = LocalStorage.newInstance().get(LocalStorage.FAVOURITE_LOCATION)
 
@@ -34,7 +37,35 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
     }
 
     inner class ViewHolder(itemView : View, override val binding: LocationItemLayoutBinding) : BaseViewHolder(itemView) {
+//        GestureDetector.listener
         override fun bind(item: LocationResponse) {
+            binding.marker.scaleX = 0f
+            binding.checkBox.scaleX = 0f
+
+
+            binding.root.setOnLongClickListener(object : View.OnLongClickListener {
+                override fun onLongClick(v: View?): Boolean {
+                    isEditing = !isEditing
+                    notifyDataSetChanged()
+                    return false
+                }
+            })
+
+            if (isEditing) {
+                binding.marker.visibility = View.GONE
+                binding.checkBox.visibility = View.VISIBLE
+                binding.checkBox.animate()
+                    .setInterpolator(DecelerateInterpolator())
+                    .scaleX(1f)
+                    .setDuration(900L).start()
+            } else {
+                binding.checkBox.visibility = View.GONE
+                binding.marker.visibility = View.VISIBLE
+                binding.marker.animate()
+                    .setInterpolator(DecelerateInterpolator())
+                    .scaleX(1f)
+                    .setDuration(900L).start()
+            }
             binding.locationName.text = item.name
             binding.locationRegion.text = item.region
             binding.locationCountry.text = item.country
