@@ -24,6 +24,8 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
 
     private val locationListFlow = weatherService.getLocationListFlow()
 
+    private var activeEditingList = mutableListOf<LocationResponse>()
+
     fun getLocationListByQuery(query : String, lang : String = "en") = vms.launch(dio) {
         _locationList.loading()
         weatherService.getLocationListByQuery(query, lang)
@@ -56,6 +58,35 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
     fun setLocationAsFavourite(location : LocationResponse) {
         val localStorage = LocalStorage.newInstance()
         localStorage.save(LocalStorage.FAVOURITE_LOCATION, location.toJson())
+    }
+
+    fun addToEditingList(item : LocationResponse) {
+        Log.d("Room", "added:  ${item.name}")
+        activeEditingList.add(item)
+        Log.d("Room", "deletingList:  ${activeEditingList}")
+    }
+
+    fun removeFromEditingList(item : LocationResponse) {
+        Log.d("Room", "removed:  ${item.name}")
+        activeEditingList.remove(item)
+        Log.d("Room", "deletingList:  ${activeEditingList}")
+    }
+
+    fun clearEditingList() {
+        activeEditingList = mutableListOf()
+    }
+
+    fun removeActiveListLocations() = vms.launch {
+        Log.d("Room", "deletingList:  ${activeEditingList}")
+        val deletingJob = vms.launch {
+            activeEditingList.forEach { location ->
+                Log.d("Room", "deleting from bd ${location.name}")
+                repository.removeLocationById(location.id)
+            }
+        }
+        deletingJob.join()
+        getLocationsList()
+
     }
 
 }

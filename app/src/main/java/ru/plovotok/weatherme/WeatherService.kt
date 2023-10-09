@@ -31,22 +31,17 @@ class WeatherService {
 
     fun getLocationListFlow() = locationListFlow
 
-    fun getWeatherByQuery(location : String?) = getWeatherScope.launch {
+    fun getWeatherByQuery() = getWeatherScope.launch {
         var query = "Moscow"
-        if (location == null) {
-            val locationJson = localStorage.get(LocalStorage.FAVOURITE_LOCATION)
-            Log.d("Ktor-client", "favourite location: $locationJson")
 
-            if (locationJson != null) {
-                val location = Gson().fromJson(locationJson, LocationResponseDTO::class.java)
-                query = "${location.lat},${location.lon}"
-            } else {
-                query = "Moscow"
-            }
+        val locationJson = localStorage.get(LocalStorage.FAVOURITE_LOCATION)
+        Log.d("Ktor-client", "favourite location: $locationJson")
 
-
+        if (locationJson != null) {
+            val location = Gson().fromJson(locationJson, LocationResponseDTO::class.java)
+            query = "${location.lat},${location.lon}"
         } else {
-            query = location
+            query = "Moscow"
         }
 
         val weather = repository.getWeatherByQuery(q = query)

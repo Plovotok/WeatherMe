@@ -5,25 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.recyclerview.widget.DiffUtil
-import com.google.gson.Gson
 import ru.plovotok.weatherme.R
-import ru.plovotok.weatherme.data.models.LocationResponseDTO
 import ru.plovotok.weatherme.databinding.LocationItemLayoutBinding
 import ru.plovotok.weatherme.domain.models.LocationResponse
-import ru.plovotok.weatherme.localstorage.LocalStorage
 import ru.plovotok.weatherme.presentation.base.BaseAdapter
 
 class LocationsAdapter(private val listener : LocationItemClickListener, private val type : Type) : BaseAdapter<LocationItemLayoutBinding, LocationResponse>() {
 
     private var isEditing = false
 
-    private val currentFavouriteLocationJson = LocalStorage.newInstance().get(LocalStorage.FAVOURITE_LOCATION)
 
-    private var currentFavouriteLocation = if (currentFavouriteLocationJson != null) {
-        Gson().fromJson(currentFavouriteLocationJson, LocationResponseDTO::class.java).toModel()
-    } else {
-        LocationResponse(id = 0, name = "", region = "", country = "", lat = 0.0, lon = 0.0)
-    }
     override fun createViewHolder(parent: ViewGroup): BaseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.location_item_layout, parent, false)
         return ViewHolder(view, LocationItemLayoutBinding.bind(view))
@@ -37,15 +28,33 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
     }
 
     inner class ViewHolder(itemView : View, override val binding: LocationItemLayoutBinding) : BaseViewHolder(itemView) {
-//        GestureDetector.listener
         override fun bind(item: LocationResponse) {
             binding.marker.scaleX = 0f
             binding.checkBox.scaleX = 0f
+            binding.checkBox.x = -binding.marker.width.toFloat()
+            binding.marker.x = -binding.marker.width.toFloat()
+//            binding.favouriteButton.x = binding.root.width.toFloat()
+
+            val horizontalPadding = binding.root.paddingRight.toFloat()
+
+            when (isEditing) {
+                true -> listener.onListEditing(true)
+                false -> listener.onListEditing(false)
+            }
+
+
+            binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
+                when(isChecked) {
+                    true -> listener.onItemAddToDeleteList(item)
+                    false -> listener.onItemRemoveFromDeleteList(item)
+                }
+            }
 
 
             binding.root.setOnLongClickListener(object : View.OnLongClickListener {
                 override fun onLongClick(v: View?): Boolean {
                     isEditing = !isEditing
+                    listener.onListEditing(isEditing)
                     notifyDataSetChanged()
                     return false
                 }
@@ -53,17 +62,32 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
 
             if (isEditing) {
                 binding.marker.visibility = View.GONE
+//                binding.favouriteButton.visibility = View.GONE
                 binding.checkBox.visibility = View.VISIBLE
                 binding.checkBox.animate()
                     .setInterpolator(DecelerateInterpolator())
                     .scaleX(1f)
+                    .translationX(0f)
+                    .setDuration(900L).start()
+                binding.favouriteButton.animate()
+                    .setInterpolator(DecelerateInterpolator())
+                    .translationX(binding.favouriteButton.width.toFloat() + horizontalPadding)
+                    .withEndAction {
+                        binding.favouriteButton.visibility = View.GONE
+                    }
                     .setDuration(900L).start()
             } else {
                 binding.checkBox.visibility = View.GONE
+                binding.favouriteButton.visibility = View.VISIBLE
                 binding.marker.visibility = View.VISIBLE
                 binding.marker.animate()
                     .setInterpolator(DecelerateInterpolator())
                     .scaleX(1f)
+                    .translationX(0f)
+                    .setDuration(900L).start()
+                binding.favouriteButton.animate()
+                    .setInterpolator(DecelerateInterpolator())
+                    .translationX(0f)
                     .setDuration(900L).start()
             }
             binding.locationName.text = item.name
@@ -75,7 +99,7 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
             }
 
             binding.removeButton.setOnClickListener {
-                listener.onItemRemove(item = item)
+//                listener.onItemRemove(item = item)
             }
 
             binding.favouriteButton.setOnClickListener {
@@ -86,9 +110,9 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
             when (type) {
                 Type.MY_LOCATIONS -> {
                     with(binding) {
-                        removeButton.visibility = View.VISIBLE
+                        removeButton.visibility = View.GONE
                         addButton.visibility = View.GONE
-                        favouriteButton.visibility = View.VISIBLE
+//                        favouriteButton.visibility = View.VISIBLE
                     }
                 }
                 Type.SERVER_LOCATIONS -> {
@@ -103,10 +127,18 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
 
     }
 
+    fun finishEditing() {
+        isEditing = false
+        notifyDataSetChanged()
+    }
+
     interface LocationItemClickListener {
         fun onItemAdd(item : LocationResponse)
         fun onItemRemove(item: LocationResponse)
         fun onItemFavourite(item: LocationResponse)
+        fun onListEditing(isEditing : Boolean)
+        fun onItemAddToDeleteList(item : LocationResponse)
+        fun onItemRemoveFromDeleteList(item : LocationResponse)
     }
 
     enum class Type {

@@ -33,8 +33,8 @@ class WeatherViewModel : BaseViewModel() {
     private val weatherService = WeatherService.newInstance()
     private val weatherFlow = weatherService.getWeatherFlow()
 
-    fun getWeather(location : String?) = vms.launch(dio) {
-        weatherService.getWeatherByQuery(location)
+    fun getWeather() = vms.launch(dio) {
+        weatherService.getWeatherByQuery()
 
         _precipitationChances.loading()
         _hourlyForecast.loading()

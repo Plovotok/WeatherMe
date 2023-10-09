@@ -1,0 +1,33 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="33dp"
+    android:height="33dp"
+    android:viewportWidth="33"
+    android:viewportHeight="33">
+  
+  <path
+      android:pathData="M4.125,9.625H28.875H28.75C26.864,9.625 25.922,9.625 25.336,10.211C24.75,10.797 24.75,11.739 24.75,13.625V23.5C24.75,25.386 24.75,26.328 24.164,26.914C23.578,27.5 22.636,27.5 20.75,27.5H12.25C10.364,27.5 9.422,27.5 8.836,26.914C8.25,26.328 8.25,25.386 8.25,23.5V13.625C8.25,11.739 8.25,10.797 7.664,10.211C7.078,9.625 6.136,9.625 4.25,9.625H4.125Z"
+      android:strokeWidth="2"
+      android:fillColor="@color/light_blue_A200"
+      android:strokeColor="@color/weather_info_icon"
+      android:strokeLineCap="round"/>
+
+  <path
+      android:pathData="M13.75,20.625L13.75,16.5"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/weather_info_icon"
+      android:strokeLineCap="round"/>
+
+  <path
+      android:pathData="M19.25,20.625L19.25,16.5"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/weather_info_icon"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M13.844,4.635C14,4.488 14.346,4.359 14.826,4.267C15.306,4.175 15.895,4.125 16.5,4.125C17.105,4.125 17.694,4.175 18.174,4.267C18.654,4.359 19,4.488 19.156,4.635"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/weather_info_icon"
+      android:strokeLineCap="round"/>
+</vector>

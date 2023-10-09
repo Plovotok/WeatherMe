@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,12 +31,24 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
     private val serverLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.SERVER_LOCATIONS)
     private val myLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.MY_LOCATIONS)
 
+    private var isNowEditing: Boolean = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getLocationsList()
         collectLocationList()
         collectMyLocations()
 
+//        binding.deleteBtn.y = binding.root.height + 100f
+//        binding.deleteBtn.y = binding.root.height.toFloat()
+
+//        binding.deleteBtn.y = 500f
+
+
+        binding.deleteBtn.setOnClickListener {
+            viewModel.removeActiveListLocations()
+            myLocationsAdapter.finishEditing()
+        }
 
         with(binding.locationsRv) {
             adapter = serverLocationsAdapter
@@ -53,7 +66,6 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         }
         binding.toolbar.addButton.visibility = View.GONE
         binding.toolbar.switch1.visibility = View.GONE
-        binding.toolbar.testButton.visibility = View.GONE
 
         val timer = object : CountDownTimer(REQUEST_INTERVAL_MILLIS, 100L) {
             override fun onTick(millisUntilFinished: Long) {
@@ -167,6 +179,47 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         })
         dialog.show(childFragmentManager, "SetAsFavouriteDialog")
 
+    }
+
+    override fun onListEditing(isEditing: Boolean) {
+        when(isEditing) {
+            true -> {
+                isNowEditing = true
+                binding.deleteBtn.visibility = View.VISIBLE
+                binding.deleteBtn.animate()
+                    .translationY(0f)
+                    .setDuration(900L)
+                    .start()
+//                showToast("Editing -> true")
+            }
+            false -> {
+                isNowEditing = false
+                val bottomMargin = (binding.deleteBtn.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin.toFloat()
+
+                binding.deleteBtn.animate()
+                    .translationY(binding.deleteBtn.height + bottomMargin)
+                    .setDuration(900L)
+                    .withEndAction {
+                        binding.deleteBtn.visibility = View.GONE
+                    }
+                    .start()
+//                showToast("Editing -> false")
+//                viewModel.clearEditingList()
+            }
+        }
+
+        if (!isNowEditing) {
+            viewModel.clearEditingList()
+        }
+
+    }
+
+    override fun onItemAddToDeleteList(item: LocationResponse) {
+        viewModel.addToEditingList(item)
+    }
+
+    override fun onItemRemoveFromDeleteList(item: LocationResponse) {
+        viewModel.removeFromEditingList(item)
     }
 
 }

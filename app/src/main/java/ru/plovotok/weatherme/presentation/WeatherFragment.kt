@@ -28,7 +28,7 @@ import ru.plovotok.weatherme.presentation.base.viewhelperclasses.ChanceOfPrecipi
 import ru.plovotok.weatherme.presentation.custom.BaseEdgeEffectFactory
 
 
-class WeatherFragment(private val location : String? = null) : BaseFragment<FragmentWeatherBinding>() {
+class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 
     private val viewModel : WeatherViewModel by viewModels()
 
@@ -40,17 +40,12 @@ class WeatherFragment(private val location : String? = null) : BaseFragment<Frag
     private var nowIsDay : Int? = null
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getWeather(location)
-    }
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onResume() {
-        Log.i("Weather-Fragment", "${location} onResume()")
-        super.onResume()
 //        super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getWeather()
 
         binding.rootScroll.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.agree_button_color))
 
@@ -64,19 +59,8 @@ class WeatherFragment(private val location : String? = null) : BaseFragment<Frag
             if (nowIsDay == null) return@setOnClickListener
             val nowWeather = defineWeatherByCondition(iconCode = currentCond, isDay = nowIsDay!!)
 
-            try {
-                (requireActivity() as WeatherActivity).setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
-                findNavController().navigate(R.id.action_weatherFragment_to_addLocationFragment)
-            } catch (ex : Exception) {
-                showSnack("Вы уже на этом фрагменте, а это костыль, вот так вот")
-            }
-        }
-        binding.toolbar.testButton.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.action_weatherFragment_to_commonWeatherFragment)
-            } catch (ex : Exception) {
-                showSnack("Вы уже на этом фрагменте, а это костыль, вот так вот")
-            }
+            (requireActivity() as WeatherActivity).setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
+            findNavController().navigate(R.id.action_weatherFragment_to_addLocationFragment)
 
         }
         binding.toolbar.switch1.setOnCheckedChangeListener { _, isChecked ->
@@ -121,7 +105,7 @@ class WeatherFragment(private val location : String? = null) : BaseFragment<Frag
         binding.rainChanceRv.edgeEffectFactory = BaseEdgeEffectFactory<ChanceOfRainItemLayoutBinding, ChanceOfPrecipitaion>()
         binding.rootScroll.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
             override fun onRefresh() {
-                viewModel.getWeather(location)
+                viewModel.getWeather()
             }
 
         })
@@ -142,12 +126,12 @@ class WeatherFragment(private val location : String? = null) : BaseFragment<Frag
 
     override fun onPause() {
         super.onPause()
-        Log.i("Weather-Fragment", "${location} onPause()")
+        Log.i("Weather-Fragment", "Weather-Fragment onPause()")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.i("Weather-Fragment", "${location} onStop()")
+        Log.i("Weather-Fragment", "Weather-Fragment onStop()")
     }
 
     private fun collectWeather() = viewLifecycleOwner.lifecycleScope.launch {
@@ -238,7 +222,7 @@ class WeatherFragment(private val location : String? = null) : BaseFragment<Frag
     companion object {
 
         fun newInstance(location : String?) : WeatherFragment {
-            return WeatherFragment(location)
+            return WeatherFragment()
         }
     }
 
