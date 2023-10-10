@@ -33,7 +33,7 @@
                     android:id="@+id/query"
                     style="@style/body_regular"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginTop="32dp"
                     android:background="@drawable/edit_text_background"
                     android:drawableLeft="@drawable/location"
@@ -98,9 +98,6 @@
                 android:visibility="gone" />
         </FrameLayout>
 
-
     </LinearLayout>
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

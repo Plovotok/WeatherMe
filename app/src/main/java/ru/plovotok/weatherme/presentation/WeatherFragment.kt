@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.R
 import ru.plovotok.weatherme.databinding.ChanceOfRainItemLayoutBinding
@@ -27,7 +27,7 @@ import ru.plovotok.weatherme.presentation.base.defineWeatherByCondition
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.ChanceOfPrecipitaion
 import ru.plovotok.weatherme.presentation.custom.BaseEdgeEffectFactory
 
-
+@AndroidEntryPoint
 class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 
     private val viewModel : WeatherViewModel by viewModels()
@@ -44,7 +44,6 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        super.onViewCreated(view, savedInstanceState)
         viewModel.getWeather()
 
         binding.rootScroll.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.agree_button_color))
@@ -103,13 +102,7 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 //        VerticalOverScrollBounceEffectDecorator(ScrollViewOverScrollDecorAdapter(binding.rootScroll))
 
         binding.rainChanceRv.edgeEffectFactory = BaseEdgeEffectFactory<ChanceOfRainItemLayoutBinding, ChanceOfPrecipitaion>()
-        binding.rootScroll.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
-            override fun onRefresh() {
-                viewModel.getWeather()
-            }
-
-        })
-
+        binding.rootScroll.setOnRefreshListener { viewModel.getWeather() }
 
         collectSunState()
         collectWeather()
@@ -117,12 +110,6 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
         collectHourForecast()
         collectHeaderInfo()
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//
-//
-//    }
 
     override fun onPause() {
         super.onPause()
@@ -218,13 +205,5 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
     override fun getViewBinding(): FragmentWeatherBinding {
         return FragmentWeatherBinding.inflate(layoutInflater)
     }
-
-    companion object {
-
-        fun newInstance(location : String?) : WeatherFragment {
-            return WeatherFragment()
-        }
-    }
-
 
 }

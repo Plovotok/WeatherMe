@@ -56,7 +56,6 @@
             android:text="Russia" />
     </LinearLayout>
 
-
     <ImageView
         android:id="@+id/add_button"
         android:layout_width="30dp"
@@ -64,7 +63,5 @@
         android:src="@drawable/plus_blue"
         android:layout_gravity="center_vertical"
         android:stateListAnimator="@animator/button_press_animator"/>
-
-
 
 </LinearLayout>

@@ -16,7 +16,6 @@
 
     </style>
 
-
     <style name="Base.Theme.WeatherMeFull" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>

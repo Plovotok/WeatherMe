@@ -9,11 +9,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.data.models.LocationResponseDTO
 import ru.plovotok.weatherme.data.models.WeatherResponseDTO
-import ru.plovotok.weatherme.data.repository.WeatherRepositoryImpl
 import ru.plovotok.weatherme.domain.repository.WeatherRepository
+import ru.plovotok.weatherme.localstorage.ILocalStorage
 import ru.plovotok.weatherme.localstorage.LocalStorage
+import javax.inject.Inject
 
-class WeatherService {
+class WeatherService @Inject constructor(
+    private val localStorage : ILocalStorage,
+    private val repository : WeatherRepository
+) {
 
     private val getWeatherScope = CoroutineScope(Dispatchers.IO)
     private val getLocationsScope = CoroutineScope(Dispatchers.IO)
@@ -23,9 +27,6 @@ class WeatherService {
     private val _locationListFlow : MutableStateFlow<List<LocationResponseDTO?>?> = MutableStateFlow(null)
     private val locationListFlow = _locationListFlow.asStateFlow()
 
-    private val repository : WeatherRepository = WeatherRepositoryImpl()
-
-    private val localStorage = LocalStorage.newInstance()
 
     fun getWeatherFlow() = weatherFlow
 
@@ -48,26 +49,6 @@ class WeatherService {
         _weatherFlow.emit(weather)
     }
 
-//    init {
-//        getWeatherByQuery()
-//    }
-
-    companion object {
-        private var INSTANCE: WeatherService? = null
-
-        fun newInstance(): WeatherService {
-            if (INSTANCE != null) return INSTANCE!!
-
-            val temp = WeatherService()
-            INSTANCE = temp
-            return temp
-        }
-
-        fun initialize() {
-            INSTANCE = WeatherService()
-        }
-    }
-
    fun getLocationListByQuery(query : String, lang : String = "en") = getLocationsScope.launch {
        val response = repository.findLocationByQuery(query, lang)
        if (response != null) {
@@ -75,6 +56,10 @@ class WeatherService {
        } else {
            _locationListFlow.emit(listOf())
        }
+    }
+
+    companion object {
+        const val TAG = "Weather-Service"
     }
 
 }

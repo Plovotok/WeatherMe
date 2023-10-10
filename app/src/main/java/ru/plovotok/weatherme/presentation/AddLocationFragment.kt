@@ -7,9 +7,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.databinding.FragmentAddLocationBinding
@@ -20,13 +22,12 @@ import ru.plovotok.weatherme.presentation.base.UIState
 import ru.plovotok.weatherme.presentation.ext.hasCyrillic
 
 
+@AndroidEntryPoint
 class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), LocationsAdapter.LocationItemClickListener {
 
     private var currentInputString = ""
 //    private val viewModel : AddLocationViewModel by viewModels()
-    private val viewModel : AddLocationViewModel by lazy {
-        AddLocationViewModel((requireActivity().application as WeatherApplication).repository)
-    }
+    private val viewModel : AddLocationViewModel by viewModels()
 
     private val serverLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.SERVER_LOCATIONS)
     private val myLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.MY_LOCATIONS)
@@ -38,12 +39,6 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         viewModel.getLocationsList()
         collectLocationList()
         collectMyLocations()
-
-//        binding.deleteBtn.y = binding.root.height + 100f
-//        binding.deleteBtn.y = binding.root.height.toFloat()
-
-//        binding.deleteBtn.y = 500f
-
 
         binding.deleteBtn.setOnClickListener {
             viewModel.removeActiveListLocations()
@@ -188,9 +183,8 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
                 binding.deleteBtn.visibility = View.VISIBLE
                 binding.deleteBtn.animate()
                     .translationY(0f)
-                    .setDuration(900L)
+                    .setDuration(400L)
                     .start()
-//                showToast("Editing -> true")
             }
             false -> {
                 isNowEditing = false
@@ -198,13 +192,11 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
 
                 binding.deleteBtn.animate()
                     .translationY(binding.deleteBtn.height + bottomMargin)
-                    .setDuration(900L)
+                    .setDuration(400L)
                     .withEndAction {
                         binding.deleteBtn.visibility = View.GONE
                     }
                     .start()
-//                showToast("Editing -> false")
-//                viewModel.clearEditingList()
             }
         }
 

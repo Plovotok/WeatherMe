@@ -84,15 +84,14 @@ dependencies {
     // Airbnb Lottie
     implementation 'com.airbnb.android:lottie:6.0.0'
 
+//    Glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
     // Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-//    Live Chart
-    implementation 'com.github.Pfuster12:LiveChart:1.3.5'
-
+//    Charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // Glide

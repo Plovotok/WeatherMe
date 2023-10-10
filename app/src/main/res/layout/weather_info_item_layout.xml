@@ -17,7 +17,6 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-
         <ImageButton
             android:id="@+id/weather_info_icon"
             android:clickable="false"
@@ -49,6 +48,5 @@
 
         </LinearLayout>
     </LinearLayout>
-
 
 </LinearLayout>

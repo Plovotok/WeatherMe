@@ -30,6 +30,4 @@
         style="@style/body_regular"
         android:layout_gravity="center_horizontal"/>
 
-
-
 </LinearLayout>

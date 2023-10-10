@@ -14,7 +14,6 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
 
     private var isEditing = false
 
-
     override fun createViewHolder(parent: ViewGroup): BaseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.location_item_layout, parent, false)
         return ViewHolder(view, LocationItemLayoutBinding.bind(view))
@@ -56,7 +55,7 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
                     .setInterpolator(DecelerateInterpolator())
                     .scaleX(1f)
                     .translationX(0f)
-                    .setDuration(900L).start()
+                    .setDuration(400L).start()
             } else {
                 binding.checkBox.visibility = View.GONE
                 binding.marker.visibility = View.VISIBLE
@@ -64,7 +63,7 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
                     .setInterpolator(DecelerateInterpolator())
                     .scaleX(1f)
                     .translationX(0f)
-                    .setDuration(900L).start()
+                    .setDuration(400L).start()
             }
             binding.locationName.text = item.name
             binding.locationRegion.text = item.region

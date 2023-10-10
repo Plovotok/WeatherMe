@@ -20,13 +20,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <include
                 android:id="@+id/head"
                 layout="@layout/header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:overScrollMode="never"
@@ -88,7 +86,6 @@
                     tools:itemCount="10"
                     tools:listitem="@layout/hour_info_item_layout" />
 
-
             </LinearLayout>
 
             <LinearLayout
@@ -132,7 +129,6 @@
                     tools:itemCount="4"
                     tools:listitem="@layout/chance_of_rain_item_layout" />
 
-
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -157,6 +153,5 @@
         layout="@layout/toolbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

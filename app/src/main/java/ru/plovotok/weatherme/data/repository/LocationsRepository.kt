@@ -4,8 +4,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.plovotok.weatherme.data.models.roommodels.WeatherLocationEntity
 import ru.plovotok.weatherme.domain.repository.room.WeatherLocationsDao
+import javax.inject.Inject
 
-class LocationsRepository(private val dao : WeatherLocationsDao) {
+class LocationsRepository @Inject constructor(private val dao : WeatherLocationsDao) {
 
 //    val locations = dao.getAllLocations()
     private val _locations : MutableStateFlow<List<WeatherLocationEntity>?> = MutableStateFlow(null)
@@ -22,7 +23,7 @@ class LocationsRepository(private val dao : WeatherLocationsDao) {
     suspend fun getLocations() : List<WeatherLocationEntity>? {
         val locationsList = dao.getAllLocations()
 
-        _locations.emit(locationsList)
+//        _locations.emit(locationsList)
         return locationsList
     }
 }

@@ -1,5 +1,6 @@
 package ru.plovotok.weatherme.presentation
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,8 +13,10 @@ import ru.plovotok.weatherme.presentation.base.viewhelperclasses.ChanceOfPrecipi
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.HeaderInfo
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.HourForecast
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.WeatherInfo
+import javax.inject.Inject
 
-class WeatherViewModel : BaseViewModel() {
+@HiltViewModel
+class WeatherViewModel @Inject constructor(private val weatherService : WeatherService) : BaseViewModel() {
 
     private val _precipitationChances : MutableStateFlow<UIState<List<ChanceOfPrecipitaion>?>> = MutableStateFlow(UIState.Idle())
     val precipitationChances = _precipitationChances.asStateFlow()
@@ -30,7 +33,6 @@ class WeatherViewModel : BaseViewModel() {
     private val _headerInfo : MutableStateFlow<UIState<HeaderInfo?>> = MutableStateFlow(UIState.Idle())
     val headerInfo = _headerInfo.asStateFlow()
 
-    private val weatherService = WeatherService.newInstance()
     private val weatherFlow = weatherService.getWeatherFlow()
 
     fun getWeather() = vms.launch(dio) {
@@ -49,8 +51,6 @@ class WeatherViewModel : BaseViewModel() {
                 val current = weather.current
                 val twoDaysForecast = weather.get2DaysForecast()
                 val chancesList = weather.get2DaysForecastChances()
-
-//                _precipitationChances.success(data = forecast.chancesList)
 
                 _weatherInfo.success(data = forecast.weatherInfoList)
                 _astroInfo.success(data = forecast.astroData)

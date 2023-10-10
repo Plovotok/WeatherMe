@@ -52,11 +52,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1" />
 
-
         </LinearLayout>
 
-
     </androidx.cardview.widget.CardView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

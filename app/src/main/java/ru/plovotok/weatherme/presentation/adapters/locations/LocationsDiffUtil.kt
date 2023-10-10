@@ -3,7 +3,7 @@ package ru.plovotok.weatherme.presentation.adapters.locations
 import androidx.recyclerview.widget.DiffUtil
 import ru.plovotok.weatherme.domain.models.LocationResponse
 
-class LocationsDiffUtil(val oldList : List<LocationResponse>, val newList: List<LocationResponse>) : DiffUtil.Callback() {
+class LocationsDiffUtil(private val oldList : List<LocationResponse>, private val newList: List<LocationResponse>) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }

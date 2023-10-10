@@ -1,6 +1,7 @@
 package ru.plovotok.weatherme.presentation
 
 import android.util.Log
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -8,13 +9,20 @@ import ru.plovotok.weatherme.WeatherService
 import ru.plovotok.weatherme.data.repository.JsonUtils.toJson
 import ru.plovotok.weatherme.data.repository.LocationsRepository
 import ru.plovotok.weatherme.domain.models.LocationResponse
+import ru.plovotok.weatherme.localstorage.ILocalStorage
 import ru.plovotok.weatherme.localstorage.LocalStorage
 import ru.plovotok.weatherme.presentation.base.BaseViewModel
 import ru.plovotok.weatherme.presentation.base.UIState
+import javax.inject.Inject
 
-class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel() {
+@HiltViewModel
+class AddLocationViewModel @Inject constructor(
+    val repository: LocationsRepository,
+    private val weatherService : WeatherService,
+    private val localStorage : ILocalStorage
+    ) : BaseViewModel() {
 
-    private val weatherService = WeatherService.newInstance()
+//    private val weatherService = WeatherService.newInstance()
 
     private val _locationList : MutableStateFlow<UIState<List<LocationResponse?>?>> = MutableStateFlow(UIState.Idle())
     val locationList = _locationList.asStateFlow()
@@ -56,7 +64,7 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
     }
 
     fun setLocationAsFavourite(location : LocationResponse) {
-        val localStorage = LocalStorage.newInstance()
+//        val localStorage = LocalStorage.newInstance()
         localStorage.save(LocalStorage.FAVOURITE_LOCATION, location.toJson())
     }
 

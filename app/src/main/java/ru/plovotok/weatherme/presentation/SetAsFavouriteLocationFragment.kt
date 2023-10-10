@@ -5,12 +5,13 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import dagger.hilt.android.AndroidEntryPoint
 import ru.plovotok.weatherme.R
 import ru.plovotok.weatherme.databinding.FragmentSetAsFavouriteLocationBinding
 import ru.plovotok.weatherme.domain.models.LocationResponse
 import ru.plovotok.weatherme.presentation.base.BaseDialogFragment
 
-
+@AndroidEntryPoint
 class SetAsFavouriteLocationFragment(private val location : LocationResponse, private val dialogListener : DialogListener) : BaseDialogFragment<FragmentSetAsFavouriteLocationBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

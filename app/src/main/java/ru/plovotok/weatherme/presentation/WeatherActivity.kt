@@ -115,25 +115,5 @@ class WeatherActivity : AppCompatActivity() {
             }
         }
 
-//        if (isShowPrecipitation) {
-//            with(binding.weatherView) {
-//            angle = -30
-//                fadeOutPercent = 0.8f
-//                scaleFactor = 4f
-//                setWeatherData(PrecipType.RAIN)
-//                scaleFactor = 4f
-//                emissionRate = 200f
-//                speed = 3000
-//                speed = 1000
-//            setCustomBitmap(bitmap)
-//                resetWeather()
-//            }
-//        } else {
-//            with(binding.weatherView) {
-//                setWeatherData(PrecipType.CLEAR)
-//                resetWeather()
-//            }
-//        }
-
     }
 }
