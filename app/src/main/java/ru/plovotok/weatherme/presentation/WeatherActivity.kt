@@ -10,10 +10,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.matteobattilana.weather.PrecipType
+import dagger.hilt.android.AndroidEntryPoint
 import ru.plovotok.weatherme.databinding.ActivityWeatherBinding
 import ru.plovotok.weatherme.presentation.base.PrecipRate
 import ru.plovotok.weatherme.presentation.base.TypeOfPrecip
 
+@AndroidEntryPoint
 class WeatherActivity : AppCompatActivity() {
 
     private var _binding: ActivityWeatherBinding? = null

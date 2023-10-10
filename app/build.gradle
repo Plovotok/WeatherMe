@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 //    id 'org.jetbrains.kotlin.kapt'
 }
 
@@ -107,4 +108,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.room:room-ktx:2.5.2'
     kapt "androidx.room:room-compiler:$room_version"
+
+//    Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
 }

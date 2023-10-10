@@ -61,14 +61,16 @@ class AddLocationViewModel(val repository: LocationsRepository) : BaseViewModel(
     }
 
     fun addToEditingList(item : LocationResponse) {
-        Log.d("Room", "added:  ${item.name}")
+
         activeEditingList.add(item)
+        Log.d("Room", "added:  ${item.name}")
         Log.d("Room", "deletingList:  ${activeEditingList}")
     }
 
     fun removeFromEditingList(item : LocationResponse) {
-        Log.d("Room", "removed:  ${item.name}")
+
         activeEditingList.remove(item)
+        Log.d("Room", "removed:  ${item.name}")
         Log.d("Room", "deletingList:  ${activeEditingList}")
     }
 

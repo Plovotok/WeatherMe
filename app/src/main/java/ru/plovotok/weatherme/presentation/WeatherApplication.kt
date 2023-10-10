@@ -1,6 +1,7 @@
 package ru.plovotok.weatherme.presentation
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import io.ktor.http.URLProtocol
 import ru.plovotok.weatherme.WeatherService
 import ru.plovotok.weatherme.data.db.AppDatabase
@@ -8,6 +9,7 @@ import ru.plovotok.weatherme.data.repository.KtorClient
 import ru.plovotok.weatherme.data.repository.LocationsRepository
 import ru.plovotok.weatherme.localstorage.LocalStorage
 
+@HiltAndroidApp
 class WeatherApplication : Application() {
 
     private val database by lazy {

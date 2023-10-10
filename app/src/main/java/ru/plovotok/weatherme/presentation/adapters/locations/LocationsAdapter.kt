@@ -33,9 +33,7 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
             binding.checkBox.scaleX = 0f
             binding.checkBox.x = -binding.marker.width.toFloat()
             binding.marker.x = -binding.marker.width.toFloat()
-//            binding.favouriteButton.x = binding.root.width.toFloat()
 
-            val horizontalPadding = binding.root.paddingRight.toFloat()
 
             when (isEditing) {
                 true -> listener.onListEditing(true)
@@ -51,42 +49,20 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
             }
 
 
-            binding.root.setOnLongClickListener(object : View.OnLongClickListener {
-                override fun onLongClick(v: View?): Boolean {
-                    isEditing = !isEditing
-                    listener.onListEditing(isEditing)
-                    notifyDataSetChanged()
-                    return false
-                }
-            })
-
             if (isEditing) {
                 binding.marker.visibility = View.GONE
-//                binding.favouriteButton.visibility = View.GONE
                 binding.checkBox.visibility = View.VISIBLE
                 binding.checkBox.animate()
                     .setInterpolator(DecelerateInterpolator())
                     .scaleX(1f)
                     .translationX(0f)
                     .setDuration(900L).start()
-                binding.favouriteButton.animate()
-                    .setInterpolator(DecelerateInterpolator())
-                    .translationX(binding.favouriteButton.width.toFloat() + horizontalPadding)
-                    .withEndAction {
-                        binding.favouriteButton.visibility = View.GONE
-                    }
-                    .setDuration(900L).start()
             } else {
                 binding.checkBox.visibility = View.GONE
-                binding.favouriteButton.visibility = View.VISIBLE
                 binding.marker.visibility = View.VISIBLE
                 binding.marker.animate()
                     .setInterpolator(DecelerateInterpolator())
                     .scaleX(1f)
-                    .translationX(0f)
-                    .setDuration(900L).start()
-                binding.favouriteButton.animate()
-                    .setInterpolator(DecelerateInterpolator())
                     .translationX(0f)
                     .setDuration(900L).start()
             }
@@ -98,28 +74,28 @@ class LocationsAdapter(private val listener : LocationItemClickListener, private
                 listener.onItemAdd(item = item)
             }
 
-            binding.removeButton.setOnClickListener {
-//                listener.onItemRemove(item = item)
-            }
-
-            binding.favouriteButton.setOnClickListener {
-                listener.onItemFavourite(item = item)
-            }
 
 
             when (type) {
                 Type.MY_LOCATIONS -> {
                     with(binding) {
-                        removeButton.visibility = View.GONE
                         addButton.visibility = View.GONE
-//                        favouriteButton.visibility = View.VISIBLE
+
+                        root.setOnLongClickListener {
+                            isEditing = !isEditing
+                            listener.onListEditing(isEditing)
+                            notifyDataSetChanged()
+                            false
+                        }
+
+                        binding.root.setOnClickListener {
+                            listener.onItemFavourite(item)
+                        }
                     }
                 }
                 Type.SERVER_LOCATIONS -> {
                     with(binding) {
-                        removeButton.visibility = View.GONE
                         addButton.visibility = View.VISIBLE
-                        favouriteButton.visibility = View.GONE
                     }
                 }
             }
