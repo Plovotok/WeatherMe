@@ -1,4 +1,4 @@
-package ru.plovotok.weatherme.presentation
+package ru.plovotok.weatherme.presentation.screens
 
 import android.annotation.SuppressLint
 import android.os.Bundle

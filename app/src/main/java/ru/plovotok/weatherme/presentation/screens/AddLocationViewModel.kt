@@ -1,4 +1,4 @@
-package ru.plovotok.weatherme.presentation
+package ru.plovotok.weatherme.presentation.screens
 
 import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel

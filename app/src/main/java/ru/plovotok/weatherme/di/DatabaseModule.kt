@@ -9,12 +9,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.plovotok.weatherme.data.db.AppDatabase
 import ru.plovotok.weatherme.domain.repository.room.WeatherLocationsDao
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
     @Provides
+    @Singleton
     fun provideAppDatabase(@ApplicationContext appContext : Context) : AppDatabase {
         return Room.databaseBuilder(
             context = appContext,

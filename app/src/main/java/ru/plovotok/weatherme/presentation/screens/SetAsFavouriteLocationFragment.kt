@@ -1,4 +1,4 @@
-package ru.plovotok.weatherme.presentation
+package ru.plovotok.weatherme.presentation.screens
 
 import android.app.Dialog
 import android.content.res.ColorStateList

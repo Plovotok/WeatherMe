@@ -1,4 +1,4 @@
-package ru.plovotok.weatherme.presentation
+package ru.plovotok.weatherme.presentation.screens
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -28,7 +28,7 @@ import ru.plovotok.weatherme.presentation.base.viewhelperclasses.ChanceOfPrecipi
 import ru.plovotok.weatherme.presentation.custom.BaseEdgeEffectFactory
 
 @AndroidEntryPoint
-class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
+class WeatherFragment(val location : String? = null) : BaseFragment<FragmentWeatherBinding>() {
 
     private val viewModel : WeatherViewModel by viewModels()
 
@@ -44,9 +44,12 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getWeather()
+        viewModel.getWeatherForecast(location = location)
 
         binding.rootScroll.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.agree_button_color))
+        binding.toolbar.newButton.setOnClickListener {
+            findNavController().navigate(R.id.action_weatherFragment_to_pagerFragment)
+        }
 
         setToolbar(
             toolbar = binding.toolbar,
@@ -102,13 +105,13 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 //        VerticalOverScrollBounceEffectDecorator(ScrollViewOverScrollDecorAdapter(binding.rootScroll))
 
         binding.rainChanceRv.edgeEffectFactory = BaseEdgeEffectFactory<ChanceOfRainItemLayoutBinding, ChanceOfPrecipitaion>()
-        binding.rootScroll.setOnRefreshListener { viewModel.getWeather() }
+        binding.rootScroll.setOnRefreshListener { viewModel.getWeatherForecast(location) }
 
         collectSunState()
         collectWeather()
         collectRainChances()
         collectHourForecast()
-        collectHeaderInfo()
+//        collectHeaderInfo()
     }
 
     override fun onPause() {
@@ -170,6 +173,11 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        collectHeaderInfo()
+    }
+
     private fun collectHeaderInfo() = viewLifecycleOwner.lifecycleScope.launch {
         viewModel.headerInfo.collect { state ->
             when(state) {
@@ -204,6 +212,13 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 
     override fun getViewBinding(): FragmentWeatherBinding {
         return FragmentWeatherBinding.inflate(layoutInflater)
+    }
+
+    companion object {
+        fun newInstance(location : String?) : WeatherFragment{
+
+            return WeatherFragment(location)
+        }
     }
 
 }

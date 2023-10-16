@@ -17,7 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.databinding.ToolbarLayoutBinding
-import ru.plovotok.weatherme.presentation.WeatherActivity
+import ru.plovotok.weatherme.presentation.screens.WeatherActivity
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
