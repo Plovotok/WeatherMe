@@ -10,5 +10,6 @@ data class HeaderInfo(
     val feelsLike : Double,
     val condition : ConditionDTO?,
     val time : String,
+    val time_epoch : Long,
     val isDay : Int
 )

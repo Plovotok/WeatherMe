@@ -32,21 +32,17 @@ class WeatherService @Inject constructor(
 
     fun getLocationListFlow() = locationListFlow
 
-    suspend fun getForecast(coordinates : String?) : WeatherResponseDTO? {
+    suspend fun getForecast() : WeatherResponseDTO? {
         var query = "Moscow"
         val locationJson = localStorage.get(LocalStorage.FAVOURITE_LOCATION)
         Log.d("Ktor-client", "favourite location: $locationJson")
-
-        if (coordinates == null) {
-            if (locationJson != null) {
-                val location = Gson().fromJson(locationJson, LocationResponseDTO::class.java)
-                query = "${location.lat},${location.lon}"
-            } else {
-                query = "Moscow"
-            }
+        if (locationJson != null) {
+            val location = Gson().fromJson(locationJson, LocationResponseDTO::class.java)
+            query = "${location.lat},${location.lon}"
         } else {
-            query = coordinates
+            query = "Moscow"
         }
+
         return repository.getWeatherByQuery(query)
     }
 

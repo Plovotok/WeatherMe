@@ -22,6 +22,7 @@ class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecas
     private var entriesList = mutableListOf<Entry>()
     private var dataset : LineDataSet? = null
     private var data : LineData? = null
+    private val compensTemp = 100f
 
     override fun createViewHolder(parent: ViewGroup): BaseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.hour_info_item_layout, parent, false)
@@ -56,8 +57,8 @@ class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecas
             binding.lineChart.xAxis.isEnabled = false
             binding.lineChart.axisLeft.isEnabled = false
             binding.lineChart.axisRight.isEnabled = false
-            binding.lineChart.axisLeft.axisMinimum = getItems().sortedBy { it.avgTemp }[0].avgTemp.toFloat() - 10f
-            binding.lineChart.axisLeft.axisMaximum = getItems().sortedBy { it.avgTemp }[getItems().size - 1].avgTemp.toFloat() + 2f
+            binding.lineChart.axisLeft.axisMinimum = getItems().sortedBy { it.avgTemp }[0].avgTemp.toFloat() - 10f + compensTemp
+            binding.lineChart.axisLeft.axisMaximum = getItems().sortedBy { it.avgTemp }[getItems().size - 1].avgTemp.toFloat() + 2f + compensTemp
 
 
             binding.lineChart.xAxis.axisMinimum = ((adapterPosition - 1).toFloat() + (adapterPosition).toFloat())/2f
@@ -90,7 +91,7 @@ class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecas
             dataset?.valueTextSize = 20f
             dataset?.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return "${value.toInt()}°"
+                    return "${value.toInt() - compensTemp.toInt()}°"
                 }
             }
         }
@@ -98,11 +99,11 @@ class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecas
         private fun makeEntries() {
             val items = getItems()
             val entries = mutableListOf<Entry>()
-            entries.add(Entry(-1f, items[0].avgTemp.toFloat()))
+            entries.add(Entry(-1f, items[0].avgTemp.toFloat() + compensTemp))
             for (i in items.indices) {
-                entries.add(Entry(i.toFloat(), items[i].avgTemp.toInt().toFloat()))
+                entries.add(Entry(i.toFloat(), items[i].avgTemp.toInt().toFloat() + compensTemp))
             }
-            entries.add(Entry(entries.size.toFloat(), items[itemCount-1].avgTemp.toFloat()))
+            entries.add(Entry(entries.size.toFloat(), items[itemCount-1].avgTemp.toFloat() + compensTemp))
             entriesList = entries
             dataset = LineDataSet(entriesList, "График первый")
             data = LineData(dataset)

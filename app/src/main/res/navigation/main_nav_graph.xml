@@ -14,18 +14,10 @@
             app:destination="@id/addLocationFragment"
             app:enterAnim="@anim/fragment_enter_anim"
             app:popExitAnim="@anim/fragment_exit_anim"/>
-        <action
-            android:id="@+id/action_weatherFragment_to_pagerFragment"
-            app:destination="@id/pagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/addLocationFragment"
         android:name="ru.plovotok.weatherme.presentation.screens.AddLocationFragment"
         android:label="fragment_add_location"
         tools:layout="@layout/fragment_add_location" />
-    <fragment
-        android:id="@+id/pagerFragment"
-        android:name="ru.plovotok.weatherme.presentation.screens.PagerFragment"
-        android:label="fragment_pager"
-        tools:layout="@layout/fragment_pager" />
 </navigation>

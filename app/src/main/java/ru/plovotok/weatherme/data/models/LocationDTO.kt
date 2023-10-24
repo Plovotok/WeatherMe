@@ -7,5 +7,6 @@ data class LocationDTO(
     val name : String,
     val region : String,
     val country : String,
-    val localtime : String
+    val localtime : String,
+    val localtime_epoch : Long
 )

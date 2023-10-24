@@ -34,14 +34,14 @@ class WeatherViewModel @Inject constructor(private val weatherService : WeatherS
     private val _headerInfo : MutableStateFlow<UIState<HeaderInfo?>> = MutableStateFlow(UIState.Idle())
     val headerInfo = _headerInfo.asStateFlow()
 
-    fun getWeatherForecast(location : String?) = vms.launch(dio) {
+    fun getWeatherForecast() = vms.launch(dio) {
         _precipitationChances.loading()
         _hourlyForecast.loading()
         _weatherInfo.loading()
         _astroInfo.loading()
         _headerInfo.loading()
 
-        val weather = weatherService.getForecast(location)
+        val weather = weatherService.getForecast()
         Log.d("ViewModel", weather.toString())
 
         if (weather != null) {
@@ -91,6 +91,7 @@ class WeatherViewModel @Inject constructor(private val weatherService : WeatherS
                 feelsLike = current.feelsLike,
                 condition = current.condition,
                 time = weather.location.localtime,
+                time_epoch = weather.location.localtime_epoch,
                 isDay = current.isDay
             )
             )

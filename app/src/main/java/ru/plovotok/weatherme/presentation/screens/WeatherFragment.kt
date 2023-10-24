@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.plovotok.weatherme.R
-import ru.plovotok.weatherme.databinding.ChanceOfRainItemLayoutBinding
 import ru.plovotok.weatherme.databinding.FragmentWeatherBinding
 import ru.plovotok.weatherme.presentation.adapters.AstroAdapter
 import ru.plovotok.weatherme.presentation.adapters.ChancesAdapter
@@ -24,11 +23,10 @@ import ru.plovotok.weatherme.presentation.base.PrecipRate
 import ru.plovotok.weatherme.presentation.base.TypeOfPrecip
 import ru.plovotok.weatherme.presentation.base.UIState
 import ru.plovotok.weatherme.presentation.base.defineWeatherByCondition
-import ru.plovotok.weatherme.presentation.base.viewhelperclasses.ChanceOfPrecipitaion
-import ru.plovotok.weatherme.presentation.custom.BaseEdgeEffectFactory
+import ru.plovotok.weatherme.presentation.custom.SunStateView
 
 @AndroidEntryPoint
-class WeatherFragment(val location : String? = null) : BaseFragment<FragmentWeatherBinding>() {
+class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 
     private val viewModel : WeatherViewModel by viewModels()
 
@@ -44,12 +42,9 @@ class WeatherFragment(val location : String? = null) : BaseFragment<FragmentWeat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getWeatherForecast(location = location)
+        viewModel.getWeatherForecast()
 
         binding.rootScroll.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.agree_button_color))
-        binding.toolbar.newButton.setOnClickListener {
-            findNavController().navigate(R.id.action_weatherFragment_to_pagerFragment)
-        }
 
         setToolbar(
             toolbar = binding.toolbar,
@@ -104,8 +99,8 @@ class WeatherFragment(val location : String? = null) : BaseFragment<FragmentWeat
 //        VerticalOverScrollBounceEffectDecorator(RecyclerViewOverScrollDecorAdapter(binding.rainChanceRv))
 //        VerticalOverScrollBounceEffectDecorator(ScrollViewOverScrollDecorAdapter(binding.rootScroll))
 
-        binding.rainChanceRv.edgeEffectFactory = BaseEdgeEffectFactory<ChanceOfRainItemLayoutBinding, ChanceOfPrecipitaion>()
-        binding.rootScroll.setOnRefreshListener { viewModel.getWeatherForecast(location) }
+//        binding.rainChanceRv.edgeEffectFactory = BaseEdgeEffectFactory<ChanceOfRainItemLayoutBinding, ChanceOfPrecipitaion>()
+        binding.rootScroll.setOnRefreshListener { viewModel.getWeatherForecast() }
 
         collectSunState()
         collectWeather()
@@ -167,6 +162,22 @@ class WeatherFragment(val location : String? = null) : BaseFragment<FragmentWeat
                 is UIState.Success -> {
                     state.data?.let { sunStateAdapter.loadItems(items = it) }
                     sunStateAdapter.notifyDataSetChanged()
+
+                    val hoursRise = 7
+                    val minutesRise = 18
+                    val timeInMillisRise = hoursRise?.toLong()?.times((60 * 60 * 1000))?.plus(minutesRise?.toLong()?.times((60 * 1000))!!)
+                    Log.d("SunState", "rise : ${timeInMillisRise}")
+
+                    val hoursSet = 17
+                    val minutesSet = 9
+
+                    val timeInMillisSet = hoursSet?.toLong()?.times((60 * 60 * 1000))?.plus(minutesSet?.toLong()?.times((60 * 1000))!!)
+                    Log.d("SunState", "set : ${timeInMillisSet}")
+
+                    binding.sunView.setSunRiseAndSetTime(
+                        timeInMillisRise ?: (SunStateView.MILLIS_IN_DAY * 0.25).toLong(),
+                        timeInMillisSet ?: (SunStateView.MILLIS_IN_DAY * 0.75).toLong()
+                    )
                 }
                 else -> {}
             }
@@ -186,9 +197,17 @@ class WeatherFragment(val location : String? = null) : BaseFragment<FragmentWeat
                     binding.rootScroll.isRefreshing = false
                     val headerInfo = state.data
                     binding.toolbar.titleTextView.text = headerInfo?.location
+
+                    state.data?.time_epoch?.let {
+                        val daysLeft = (it / SunStateView.SECONDS_PER_DAY).toInt()
+                        val millis = (it - daysLeft * SunStateView.SECONDS_PER_DAY + 3 * 60 * 60) * 1000
+
+                        binding.sunView.setCurrentTime(millis)
+                    }
+
                     with(binding.head) {
-                        avgTemp.text = "${headerInfo?.currentTemp}°"
-                        feelsLike.text ="Feels like ${headerInfo?.feelsLike}°"
+                        avgTemp.text = "${headerInfo?.currentTemp?.toInt()}°"
+                        feelsLike.text ="Feels like ${headerInfo?.feelsLike?.toInt()}°"
                         weatherDesc.text = headerInfo?.condition?.text
                         if (headerInfo != null) {
                             nowIsDay = headerInfo.isDay
@@ -198,8 +217,8 @@ class WeatherFragment(val location : String? = null) : BaseFragment<FragmentWeat
                             (requireActivity() as WeatherActivity).setTimeImage(screenWeather.backgroundResource, screenWeather.precipType, screenWeather.precipRate)
                             currentCond = headerInfo.condition.code
                         }
-                        minTemp.text = "night: ${headerInfo?.minTemp}°"
-                        maxTemp.text = "day: ${headerInfo?.maxTemp}°"
+                        minTemp.text = "night: ${headerInfo?.minTemp?.toInt()}°"
+                        maxTemp.text = "day: ${headerInfo?.maxTemp?.toInt()}°"
                         date.text = headerInfo?.time
                     }
 
@@ -212,13 +231,6 @@ class WeatherFragment(val location : String? = null) : BaseFragment<FragmentWeat
 
     override fun getViewBinding(): FragmentWeatherBinding {
         return FragmentWeatherBinding.inflate(layoutInflater)
-    }
-
-    companion object {
-        fun newInstance(location : String?) : WeatherFragment{
-
-            return WeatherFragment(location)
-        }
     }
 
 }
