@@ -41,12 +41,14 @@ class SunStateView : View {
 
     private var lineColor : Int = Color.WHITE
     private var linePaint = Paint().apply {
+        flags = Paint.ANTI_ALIAS_FLAG
         style = Paint.Style.STROKE
         strokeWidth = 3f
         color = lineColor
     }
     private var sunRadius = 40f
     private val sunPaint = Paint().apply {
+        flags = Paint.ANTI_ALIAS_FLAG
         style = Paint.Style.FILL_AND_STROKE
         strokeWidth = 3f
 //        color = Color.WHITE
@@ -113,6 +115,7 @@ class SunStateView : View {
         val horizontalLineHeight = defineHorizontalLinePercentage() * contentHeight +
                 paddingTop + (linePaint.strokeWidth/2).toInt() + sunRadius
 
+
         canvas.drawLine(
             paddingLeft.toFloat(),
             horizontalLineHeight,
@@ -121,12 +124,43 @@ class SunStateView : View {
             linePaint)
 
         val cx = contentWidth * progress/100
-        drawSunByCoordinates(cx, cy = cosine(cx - paddingLeft), canvas)
+
+        val cor = if (currentTime in sunRiseTime*0.993.toLong()..sunRiseTime) {
+//            -sunRadius
+            0f
+        } else if (currentTime in sunSetTime..sunSetTime*1.007.toLong()) {
+//            sunRadius
+            0f
+        } else {
+            0f
+        }
+        drawSunByCoordinates(cx + cor, cy = cosine(cx + cor - paddingLeft), canvas)
     }
 
     private fun drawSunByCoordinates(cx : Float, cy : Float, canvas : Canvas) {
         sunPaint.shader = RadialGradient(cx, cy, sunRadius, Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP)
+
         canvas.drawCircle(cx, cy, sunRadius, sunPaint)
+        sunPaint.style = Paint.Style.STROKE
+        sunPaint.strokeWidth = 10f
+        sunPaint.shader = RadialGradient(cx, cy, sunRadius * 2f, Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP)
+        canvas.drawCircle(cx, cy, sunRadius * 2, sunPaint)
+
+        if (currentTime in sunRiseTime..sunSetTime) {
+            sunPaint.strokeWidth = 3f
+            sunPaint.style = Paint.Style.FILL_AND_STROKE
+            sunPaint.color = Color.WHITE
+            sunPaint.shader = Shader()
+            canvas.drawCircle(cx, cy, sunRadius / 3, sunPaint)
+        } else {
+            sunPaint.strokeWidth = 3f
+            sunPaint.style = Paint.Style.FILL_AND_STROKE
+            sunPaint.color = Color.BLACK
+            sunPaint.shader = Shader()
+            canvas.drawCircle(cx, cy, sunRadius / 3, sunPaint)
+        }
+
+
     }
 
     private fun cosine(value : Float) : Float {
@@ -136,16 +170,13 @@ class SunStateView : View {
     private fun defineHorizontalLinePercentage() : Float {
 
         val percent: Float = if (MILLIS_IN_DAY - sunRiseTime >= 0) {
-            sunRiseTime.toFloat() / (MILLIS_IN_DAY/2).toFloat()
+            (sunSetTime - sunRiseTime).toFloat()/ MILLIS_IN_DAY
         } else {
             0.5f
         }
 
-        Log.i("SunState", "percents : ${1 - percent}")
-//        Log.i("SunState", "sunRiseProgress : $sunRiseProgress")
-//        Log.i("SunState", "sunSetProgress : $sunSetProgress")
-
-        return 1 - percent
+        Log.i("SunState", "percents : ${percent}")
+        return percent
     }
 
     fun setCurrentTime(timeInMillis : Long) {

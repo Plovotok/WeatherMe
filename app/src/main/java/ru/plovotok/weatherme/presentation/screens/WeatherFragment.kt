@@ -24,6 +24,8 @@ import ru.plovotok.weatherme.presentation.base.TypeOfPrecip
 import ru.plovotok.weatherme.presentation.base.UIState
 import ru.plovotok.weatherme.presentation.base.defineWeatherByCondition
 import ru.plovotok.weatherme.presentation.custom.SunStateView
+import java.util.Calendar
+import java.util.TimeZone
 
 @AndroidEntryPoint
 class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
@@ -58,6 +60,7 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 
             (requireActivity() as WeatherActivity).setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
             findNavController().navigate(R.id.action_weatherFragment_to_addLocationFragment)
+//            findNavController().navigate(R.id.action_weatherFragment_to_testFragment)
 
         }
         binding.toolbar.switch1.setOnCheckedChangeListener { _, isChecked ->
@@ -163,13 +166,15 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                     state.data?.let { sunStateAdapter.loadItems(items = it) }
                     sunStateAdapter.notifyDataSetChanged()
 
-                    val hoursRise = 7
-                    val minutesRise = 18
+                    val hoursRise = state.data?.get(0)?.time?.substring(0, 5)?.split(":")?.first()
+                    val minutesRise = state.data?.get(0)?.time?.substring(0, 5)?.split(":")?.last()
                     val timeInMillisRise = hoursRise?.toLong()?.times((60 * 60 * 1000))?.plus(minutesRise?.toLong()?.times((60 * 1000))!!)
                     Log.d("SunState", "rise : ${timeInMillisRise}")
 
-                    val hoursSet = 17
-                    val minutesSet = 9
+                    val hoursSet =
+                        state.data?.get(1)?.time?.substring(0, 5)?.split(":")?.first()?.toInt()
+                            ?.plus(12)
+                    val minutesSet = state.data?.get(1)?.time?.substring(0, 5)?.split(":")?.last()
 
                     val timeInMillisSet = hoursSet?.toLong()?.times((60 * 60 * 1000))?.plus(minutesSet?.toLong()?.times((60 * 1000))!!)
                     Log.d("SunState", "set : ${timeInMillisSet}")
@@ -199,8 +204,20 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                     binding.toolbar.titleTextView.text = headerInfo?.location
 
                     state.data?.time_epoch?.let {
+                        val splittedString = state.data.time.split(":").first()
+                        val stringLength = splittedString.length
+
+                        val hoursByLocationTime = splittedString.substring(stringLength - 2,stringLength).split(" ").last().toInt()
+                        val hoursByGmt = Calendar.getInstance(TimeZone.getTimeZone("GMT+00")).get(Calendar.HOUR_OF_DAY)
+                        val deltaHour = hoursByLocationTime - hoursByGmt
+
                         val daysLeft = (it / SunStateView.SECONDS_PER_DAY).toInt()
-                        val millis = (it - daysLeft * SunStateView.SECONDS_PER_DAY + 3 * 60 * 60) * 1000
+                        val millis = (it - daysLeft * SunStateView.SECONDS_PER_DAY + deltaHour * 60 * 60) * 1000
+
+
+//                        val millis = 780000L - 1L
+//                        val millis = 26400000L + 1L
+//                        val millis = 61560000L + 1L
 
                         binding.sunView.setCurrentTime(millis)
                     }
