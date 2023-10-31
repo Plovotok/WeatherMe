@@ -1,6 +1,6 @@
 <resources>
     <declare-styleable name="SunStateView">
-
+        <attr name="progress" format="float"/>
         <attr name="progressColor" format="color|reference" />
         <attr name="backgroundColor" format="color|reference" />
     </declare-styleable>

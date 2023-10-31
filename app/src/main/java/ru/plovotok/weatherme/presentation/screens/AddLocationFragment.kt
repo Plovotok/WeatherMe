@@ -31,6 +31,8 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
 
     private val serverLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.SERVER_LOCATIONS)
     private val myLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.MY_LOCATIONS)
+//    private val myLocationsAdapter = TestAdapter()
+//    /private val myLocationsAdapter = NewTestAdapter()
 
     private var isNowEditing: Boolean = false
 
@@ -53,6 +55,7 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
         with(binding.myLocationsRv) {
             adapter = myLocationsAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            invalidateItemDecorations()
         }
 
         setToolbar(toolbar = binding.toolbar, title = "Добавить локацию", backButtonEnabled = true, addButtonEnabled = false, switchEnabled = false)
@@ -130,6 +133,9 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
                 is UIState.Success -> {
                     if (!state.data.isNullOrEmpty()) {
                         myLocationsAdapter.difLoadItems(state.data)
+//                        myLocationsAdapter.loadItems(state.data)
+//                        myLocationsAdapter.submitList(state.data.toMutableList())
+//                        myLocationsAdapter.notifyDataSetChanged()
                     }
                 }
                 else -> {}

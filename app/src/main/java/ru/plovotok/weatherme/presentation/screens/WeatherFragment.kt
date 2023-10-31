@@ -23,6 +23,9 @@ import ru.plovotok.weatherme.presentation.base.PrecipRate
 import ru.plovotok.weatherme.presentation.base.TypeOfPrecip
 import ru.plovotok.weatherme.presentation.base.UIState
 import ru.plovotok.weatherme.presentation.base.defineWeatherByCondition
+import ru.plovotok.weatherme.presentation.base.viewhelperclasses.AstroInfo
+import ru.plovotok.weatherme.presentation.base.viewhelperclasses.AstroType
+import ru.plovotok.weatherme.presentation.custom.SunData
 import ru.plovotok.weatherme.presentation.custom.SunStateView
 import java.util.Calendar
 import java.util.TimeZone
@@ -38,7 +41,6 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
     private val sunStateAdapter = AstroAdapter()
     private var currentCond = 0
     private var nowIsDay : Int? = null
-
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,19 +64,6 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
             findNavController().navigate(R.id.action_weatherFragment_to_addLocationFragment)
 //            findNavController().navigate(R.id.action_weatherFragment_to_testFragment)
 
-        }
-        binding.toolbar.switch1.setOnCheckedChangeListener { _, isChecked ->
-            if (!isChecked) {
-//                (requireActivity() as WeatherActivity).setTimeImage(R.drawable.day_time)
-
-//                (requireActivity() as WeatherActivity).setTimeImage(R.drawable.sun_background)
-//                (requireActivity() as WeatherActivity).setTimeImage(defineWeatherIconID(iconCode = currentCond, isDay = 1).backgroundResource)
-            }  else {
-//                (requireActivity() as WeatherActivity).setTimeImage(R.drawable.night_forest)
-//                (requireActivity() as WeatherActivity).setTimeImage(R.drawable.starry_night_background)
-//                currentCond = 1003
-//                (requireActivity() as WeatherActivity).setTimeImage(defineWeatherIconID(iconCode = currentCond, isDay = 0).backgroundResource)
-            }
         }
 
         with(binding.weatherInfoRv) {
@@ -163,26 +152,19 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
         viewModel.astroInfo.collect { state ->
             when(state) {
                 is UIState.Success -> {
-                    state.data?.let { sunStateAdapter.loadItems(items = it) }
-                    sunStateAdapter.notifyDataSetChanged()
+                    state.data?.let {
+                        val riseSetTimes = countMillisRiseSet(it)
+                        binding.sunView.setSunRiseAndSunSetTime(
+                            riseSetTimes.sunRiseMillis, riseSetTimes.sunSetMillis
+                        )
 
-                    val hoursRise = state.data?.get(0)?.time?.substring(0, 5)?.split(":")?.first()
-                    val minutesRise = state.data?.get(0)?.time?.substring(0, 5)?.split(":")?.last()
-                    val timeInMillisRise = hoursRise?.toLong()?.times((60 * 60 * 1000))?.plus(minutesRise?.toLong()?.times((60 * 1000))!!)
-                    Log.d("SunState", "rise : ${timeInMillisRise}")
+                        sunStateAdapter.loadItems(items = listOf(
+                            AstroInfo(type = AstroType.SUNRISE, time = riseSetTimes.sunRiseTime),
+                            AstroInfo(type = AstroType.SUNSET, time = riseSetTimes.sunSetTime)
+                        ))
+                        sunStateAdapter.notifyDataSetChanged()
+                    }
 
-                    val hoursSet =
-                        state.data?.get(1)?.time?.substring(0, 5)?.split(":")?.first()?.toInt()
-                            ?.plus(12)
-                    val minutesSet = state.data?.get(1)?.time?.substring(0, 5)?.split(":")?.last()
-
-                    val timeInMillisSet = hoursSet?.toLong()?.times((60 * 60 * 1000))?.plus(minutesSet?.toLong()?.times((60 * 1000))!!)
-                    Log.d("SunState", "set : ${timeInMillisSet}")
-
-                    binding.sunView.setSunRiseAndSetTime(
-                        timeInMillisRise ?: (SunStateView.MILLIS_IN_DAY * 0.25).toLong(),
-                        timeInMillisSet ?: (SunStateView.MILLIS_IN_DAY * 0.75).toLong()
-                    )
                 }
                 else -> {}
             }
@@ -204,19 +186,12 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                     binding.toolbar.titleTextView.text = headerInfo?.location
 
                     state.data?.time_epoch?.let {
-                        val splittedString = state.data.time.split(":").first()
-                        val stringLength = splittedString.length
-
-                        val hoursByLocationTime = splittedString.substring(stringLength - 2,stringLength).split(" ").last().toInt()
-                        val hoursByGmt = Calendar.getInstance(TimeZone.getTimeZone("GMT+00")).get(Calendar.HOUR_OF_DAY)
-                        val deltaHour = hoursByLocationTime - hoursByGmt
-
+                        val deltaHour = countDeltaHour(state.data.time)
                         val daysLeft = (it / SunStateView.SECONDS_PER_DAY).toInt()
                         val millis = (it - daysLeft * SunStateView.SECONDS_PER_DAY + deltaHour * 60 * 60) * 1000
 
-
-//                        val millis = 780000L - 1L
-//                        val millis = 26400000L + 1L
+//                        val millis = (62760000 * 0.98).toLong() + 1L
+//                        val millis = 27900000L + 1L
 //                        val millis = 61560000L + 1L
 
                         binding.sunView.setCurrentTime(millis)
@@ -224,7 +199,8 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 
                     with(binding.head) {
                         avgTemp.text = "${headerInfo?.currentTemp?.toInt()}°"
-                        feelsLike.text ="Feels like ${headerInfo?.feelsLike?.toInt()}°"
+                        val feelLikeText = resources.getString(R.string.feels_like)
+                        feelsLike.text ="$feelLikeText ${headerInfo?.feelsLike?.toInt()}°"
                         weatherDesc.text = headerInfo?.condition?.text
                         if (headerInfo != null) {
                             nowIsDay = headerInfo.isDay
@@ -234,8 +210,10 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                             (requireActivity() as WeatherActivity).setTimeImage(screenWeather.backgroundResource, screenWeather.precipType, screenWeather.precipRate)
                             currentCond = headerInfo.condition.code
                         }
-                        minTemp.text = "night: ${headerInfo?.minTemp?.toInt()}°"
-                        maxTemp.text = "day: ${headerInfo?.maxTemp?.toInt()}°"
+                        val nightText = resources.getString(R.string.night)
+                        val dayText = resources.getString(R.string.day)
+                        minTemp.text = "$nightText: ${headerInfo?.minTemp?.toInt()}°"
+                        maxTemp.text = "$dayText: ${headerInfo?.maxTemp?.toInt()}°"
                         date.text = headerInfo?.time
                     }
 
@@ -244,6 +222,33 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                 else -> {}
             }
         }
+    }
+    private fun countMillisRiseSet(data : List<AstroInfo>) : SunData {
+        val hoursRise = data[0].time.substring(0, 5).split(":").first()
+        val minutesRise = data[0].time.substring(0, 5).split(":").last()
+        val timeInMillisRise = hoursRise.toLong().times((60 * 60 * 1000)) + minutesRise.toLong().times((60 * 1000))
+        Log.d("SunState", "rise : ${timeInMillisRise}")
+
+        val hoursSet = data[1].time.substring(0, 5).split(":").first().toInt() + 12
+        val minutesSet = data[1].time.substring(0, 5).split(":").last()
+
+        val timeInMillisSet = hoursSet.toLong().times((60 * 60 * 1000)) + minutesSet.toLong().times((60 * 1000))
+        Log.d("SunState", "set : ${timeInMillisSet}")
+        val riseString = "$hoursRise:$minutesRise"
+        val setString = "$hoursSet:$minutesSet"
+        return SunData(timeInMillisRise, timeInMillisSet, riseString, setString)
+    }
+
+    private fun countDeltaHour(serverTime: String) : Int {
+        val splittedString = serverTime.split(":").first()
+        val stringLength = splittedString.length
+
+        val hoursByLocationTime =
+            splittedString.substring(stringLength - 2, stringLength).split(" ").last().toInt()
+        val hoursByGmt =
+            Calendar.getInstance(TimeZone.getTimeZone("GMT+00")).get(Calendar.HOUR_OF_DAY)
+
+        return hoursByLocationTime - hoursByGmt
     }
 
     override fun getViewBinding(): FragmentWeatherBinding {

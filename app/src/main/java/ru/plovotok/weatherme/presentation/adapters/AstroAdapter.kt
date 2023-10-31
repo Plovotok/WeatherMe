@@ -9,8 +9,6 @@ import ru.plovotok.weatherme.databinding.WeatherInfoItemLayoutBinding
 import ru.plovotok.weatherme.presentation.base.BaseAdapter
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.AstroInfo
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.AstroType
-import ru.plovotok.weatherme.presentation.base.viewhelperclasses.WeatherInfo
-import ru.plovotok.weatherme.presentation.base.viewhelperclasses.WeatherInfoType
 
 class AstroAdapter : BaseAdapter<WeatherInfoItemLayoutBinding, AstroInfo>() {
     override fun createViewHolder(parent: ViewGroup): BaseViewHolder {
@@ -25,11 +23,11 @@ class AstroAdapter : BaseAdapter<WeatherInfoItemLayoutBinding, AstroInfo>() {
             with(binding.weatherInfoIcon) {
                 when(item.type) {
                     AstroType.SUNRISE -> {
-                        binding.name.text = "Sunrise"
+                        binding.name.text = resources.getString(R.string.sunrise)
                         setImageResource(R.drawable.sunrise)
                     }
                     AstroType.SUNSET -> {
-                        binding.name.text = "Sunset"
+                        binding.name.text = resources.getString(R.string.sunset)
                         setImageResource(R.drawable.sunset)
                     }
                 }

@@ -30,7 +30,7 @@
                 style="@style/body_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Set location as favourite location?"
+                android:text="@string/select_location_as_favourite_location"
                 android:textAlignment="center"
                 android:textColor="@color/white" />
 

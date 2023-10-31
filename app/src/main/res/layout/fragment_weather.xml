@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="8dp"
-                        android:text="Hourly forecast" />
+                        android:text="@string/hourly_forecast" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -121,7 +121,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="8dp"
-                        android:text="Chance of rain" />
+                        android:text="@string/chance_of_rain" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

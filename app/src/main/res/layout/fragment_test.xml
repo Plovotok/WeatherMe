@@ -7,7 +7,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-
+        android:background="@color/transparent"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
@@ -21,14 +21,19 @@
 
             app:contentScrim="@color/light_blue_400">
 
-            <ImageView
-                android:id="@+id/app_bar_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_collapseMode="parallax"
+<!--            <ImageView-->
+<!--                android:id="@+id/app_bar_image"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                app:layout_collapseMode="parallax"-->
 
-                android:src="@drawable/torrential_rain_shower"
-                android:scaleType="centerCrop" />
+<!--                android:src="@drawable/torrential_rain_shower"-->
+<!--                android:scaleType="centerCrop" />-->
+
+            <include
+                layout="@layout/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"

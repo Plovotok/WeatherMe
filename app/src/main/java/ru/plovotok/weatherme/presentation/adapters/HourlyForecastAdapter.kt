@@ -18,7 +18,6 @@ import ru.plovotok.weatherme.presentation.base.viewhelperclasses.HourForecast
 
 class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecast>() {
 
-//    private var items = listOf<HourForecast>()
     private var entriesList = mutableListOf<Entry>()
     private var dataset : LineDataSet? = null
     private var data : LineData? = null
@@ -32,9 +31,9 @@ class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecas
     inner class ViewHolder(itemView: View, override val binding: HourInfoItemLayoutBinding) : BaseViewHolder(itemView) {
         override fun bind(item: HourForecast) {
 //            binding.avgTemp.text = "${item.avgTemp}°"
-            if (adapterPosition == 0) {
+            if (bindingAdapterPosition == 0) {
                 makeEntries()
-                binding.time.text = "Now"
+                binding.time.text = binding.root.context.resources.getString(R.string.now)
             } else {
                 binding.time.text = item.time.split(" ").last()
             }
@@ -61,8 +60,8 @@ class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecas
             binding.lineChart.axisLeft.axisMaximum = getItems().sortedBy { it.avgTemp }[getItems().size - 1].avgTemp.toFloat() + 2f + compensTemp
 
 
-            binding.lineChart.xAxis.axisMinimum = ((adapterPosition - 1).toFloat() + (adapterPosition).toFloat())/2f
-            binding.lineChart.xAxis.axisMaximum = ((adapterPosition).toFloat() + (adapterPosition + 1).toFloat())/2f
+            binding.lineChart.xAxis.axisMinimum = ((bindingAdapterPosition - 1).toFloat() + (bindingAdapterPosition).toFloat())/2f
+            binding.lineChart.xAxis.axisMaximum = ((bindingAdapterPosition).toFloat() + (bindingAdapterPosition + 1).toFloat())/2f
 
             binding.lineChart.invalidate()
         }

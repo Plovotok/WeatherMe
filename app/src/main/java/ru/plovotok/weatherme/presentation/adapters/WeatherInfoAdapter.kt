@@ -22,7 +22,7 @@ class WeatherInfoAdapter : BaseAdapter<WeatherInfoItemLayoutBinding, WeatherInfo
 
             var valueDimension = ""
 
-            binding.name.text = item.name
+//            binding.name.text = item.name
 
             with(binding.weatherInfoIcon) {
                 when(item.type) {
@@ -31,22 +31,26 @@ class WeatherInfoAdapter : BaseAdapter<WeatherInfoItemLayoutBinding, WeatherInfo
                         valueDimension = "m/s"
                         val formattedValue = String.format("%.2f", item.value)
                         binding.value.text = "$formattedValue $valueDimension"
+                        binding.name.text = resources.getString(R.string.wind_speed)
                     }
                     WeatherInfoType.PRESSURE -> {
                         setImageResource(R.drawable.pressure)
                         valueDimension = "mm Hg"
                         binding.value.text = "${item.value.toInt()} $valueDimension"
+                        binding.name.text = resources.getString(R.string.pressure)
                     }
                     WeatherInfoType.HUMIDITY -> {
 //                        setImageResource(R.drawable.rain_chance)
                         setImageResource(R.drawable.humidity)
                         valueDimension = "%"
                         binding.value.text = "${item.value.toInt()} $valueDimension"
+                        binding.name.text = resources.getString(R.string.humidity)
                     }
                     WeatherInfoType.UV_INDEX -> {
                         setImageResource(R.drawable.uv_index)
                         valueDimension = ""
                         binding.value.text = "${item.value.toInt()} $valueDimension"
+                        binding.name.text = resources.getString(R.string.uv_index)
                     }
                 }
             }
