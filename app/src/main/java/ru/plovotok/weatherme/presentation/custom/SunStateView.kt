@@ -151,9 +151,9 @@ class SunStateView : View {
 
     private fun defineCorrDeltaX() : Float {
         return if (currentTime in (sunRiseTime*0.82).toLong()..(sunRiseTime*1.02).toLong()) {
-            -3f
+            -10f
         } else if (currentTime in (sunSetTime*0.95).toLong()..(sunSetTime*1.02).toLong()) {
-            -3f
+            -10f
         } else {
             0f
         }
@@ -197,18 +197,18 @@ class SunStateView : View {
     }
 
     private fun defineVerticalDegreeDis(cy: Float, lineY : Float) : Float {
-        Log.e(TAG, "center y: $cy")
-        Log.e(TAG, "line y: $lineY")
+        Log.w(TAG, "center y: $cy")
+        Log.w(TAG, "line y: $lineY")
         if (abs(cy - lineY) <= sunRadius/3) {
             if ((cy - lineY) < 0 ) {
                 val deltaH = lineY - cy
                 val angle = acos(deltaH / (sunRadius/3))
-                Log.e(TAG, "angle: $angle")
+                Log.w(TAG, "angle: $angle")
                 return Math.toDegrees(angle.toDouble()).toFloat()
             } else {
                 val deltaH = cy - lineY
                 val angle = acos(deltaH / (sunRadius/3))
-                Log.e(TAG, "angle: ${180f - angle}")
+                Log.w(TAG, "angle: ${180f - angle}")
                 return 180f - Math.toDegrees(angle.toDouble()).toFloat()
             }
         } else {

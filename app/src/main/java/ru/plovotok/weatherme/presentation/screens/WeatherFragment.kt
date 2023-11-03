@@ -190,7 +190,7 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                         val daysLeft = (it / SunStateView.SECONDS_PER_DAY).toInt()
                         val millis = (it - daysLeft * SunStateView.SECONDS_PER_DAY + deltaHour * 60 * 60) * 1000
 
-//                        val millis = (62760000 * 0.98).toLong() + 1L
+//                        val millis = (60660000 * 1.02).toLong() - 1L
 //                        val millis = 27900000L + 1L
 //                        val millis = 61560000L + 1L
 

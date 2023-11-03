@@ -20,4 +20,6 @@
     <string name="pressure">Давление</string>
     <string name="uv_index">УФ индекс</string>
     <string name="now">Сейчас</string>
+    <string name="m_s">м/с</string>
+    <string name="mm_hg">мм рт. ст.</string>
 </resources>

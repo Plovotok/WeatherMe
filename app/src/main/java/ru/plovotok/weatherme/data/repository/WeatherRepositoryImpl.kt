@@ -18,6 +18,7 @@ import ru.plovotok.weatherme.data.models.LocationResponseDTO
 import ru.plovotok.weatherme.data.models.WeatherResponseDTO
 import ru.plovotok.weatherme.domain.repository.WeatherRepository
 import ru.plovotok.weatherme.presentation.base.Constants
+import java.util.Locale
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor() : WeatherRepository {
@@ -41,15 +42,16 @@ class WeatherRepositoryImpl @Inject constructor() : WeatherRepository {
         }
 
         engine {
-            https {
-                trustManager = TrustAllCertsManager()
-            }
+//            https {
+//                trustManager = TrustAllCertsManager()
+//            }
         }
     }
 
 
     override suspend fun getWeatherByQuery(q : String, days : Int): WeatherResponseDTO? {
-        val response = client.get("${Constants.BASE_URL}?q=$q&key=${Constants.API_KEY}&days=$days&aqi=no&alerts=no")
+        val lang = Locale.getDefault().language
+        val response = client.get("${Constants.BASE_URL}?q=$q&key=${Constants.API_KEY}&days=$days&aqi=no&alerts=no&lang=$lang")
 //        Log.d("Ktor-client", response.body())
         Log.d("Ktor-client", response.request.url.encodedPathAndQuery)
 
@@ -62,9 +64,9 @@ class WeatherRepositoryImpl @Inject constructor() : WeatherRepository {
 
     override suspend fun findLocationByQuery(query: String, lang : String): List<LocationResponseDTO?>? {
         Log.d("Ktor-client", "$query, $lang")
-        val response = client.get("${Constants.SEARCH_URL}?q=$query&lang=$lang&key=${Constants.API_KEY}")
+        val response = client.get("${Constants.SEARCH_URL}?key=${Constants.API_KEY}&q=$query")
         Log.d("Ktor-client", response.request.url.encodedPathAndQuery)
-        Log.d("Ktor-client", response.body())
+        Log.d("Ktor-client", "response body ----> ${response.body<String>()}")
 //        Log.d("Ktor-client", response.request.toString())
 
         val json = response.body<String>()

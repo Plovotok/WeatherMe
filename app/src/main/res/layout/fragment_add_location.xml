@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.screens.AddLocationFragment">
 
     <LinearLayout
@@ -27,19 +28,49 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp">
 
-                <EditText
-                    android:id="@+id/query"
-                    style="@style/body_regular"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:background="@drawable/edit_text_background"
-                    android:drawableLeft="@drawable/location"
-                    android:ems="10"
-                    android:hint="@string/city_field_text"
-                    android:inputType="text"
-                    android:padding="4dp"
-                    android:textColorHint="@color/gray_400" />
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/location"
+                    app:startIconTint="@color/weather_info_icon"
+                    app:endIconMode="clear_text"
+                    app:endIconDrawable="@drawable/trash"
+                    app:boxBackgroundColor="#33FFFFFF"
+                    app:boxStrokeColor="@color/weather_info_icon"
+                    android:textColorHint="@color/gray_400"
+                    app:placeholderTextColor="@color/weather_info_icon"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:helperText="Enter location name"
+                    app:helperTextTextColor="@color/gray_400"
+                    app:hintTextColor="@color/weather_info_icon"
+                    android:hint="@string/city_field_text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/query"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        style="@style/body_regular"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+<!--                <EditText-->
+<!--                    android:id="@+id/query"-->
+<!--                    style="@style/body_regular"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="48dp"-->
+<!--                    android:layout_marginTop="32dp"-->
+<!--                    android:background="@drawable/edit_text_background"-->
+<!--                    android:drawableLeft="@drawable/location"-->
+<!--                    android:ems="10"-->
+<!--                    android:hint="@string/city_field_text"-->
+<!--                    android:inputType="text"-->
+<!--                    android:padding="4dp"-->
+<!--                    android:textColorHint="@color/gray_400" />-->
 
                 <TextView
                     android:id="@+id/loc_not_found_tv"
