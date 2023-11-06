@@ -19,6 +19,13 @@
         <action
             android:id="@+id/action_weatherFragment_to_testFragment"
             app:destination="@id/testFragment" />
+        <action
+            android:id="@+id/action_weatherFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@anim/fragment_enter_anim"
+            app:exitAnim="@anim/fragment_exit_anim"
+            app:popEnterAnim="@anim/fragment_pop_enter_anim"
+            app:popExitAnim="@anim/fragment_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/addLocationFragment"
@@ -29,4 +36,9 @@
         android:id="@+id/testFragment"
         android:name="ru.plovotok.weatherme.presentation.screens.TestFragment"
         android:label="TestFragment" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="ru.plovotok.weatherme.presentation.screens.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 </navigation>

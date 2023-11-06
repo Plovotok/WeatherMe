@@ -43,6 +43,7 @@
                 tools:listitem="@layout/weather_info_item_layout" />
 
             <LinearLayout
+                android:id="@+id/hourly_forecast_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_background"
@@ -92,6 +93,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/chance_of_rain_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -135,8 +137,17 @@
 
             </LinearLayout>
 
+            <include
+                android:id="@+id/weather_map_button"
+                layout="@layout/weather_map_button_layout"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"/>
+
 
             <LinearLayout
+                android:id="@+id/sunView_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

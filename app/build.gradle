@@ -113,4 +113,7 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:2.44"
 
     implementation 'com.github.valkriaine:Bouncy:2.3'
+
+    implementation 'org.maplibre.gl:android-sdk:10.0.2'
+    implementation group: 'org.webjars.npm', name: 'maptiler__sdk', version: '1.0.10'
 }

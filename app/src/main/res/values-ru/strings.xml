@@ -22,4 +22,9 @@
     <string name="now">Сейчас</string>
     <string name="m_s">м/с</string>
     <string name="mm_hg">мм рт. ст.</string>
+    <string name="wind_layer">Карта ветров</string>
+    <string name="temp_layer">Карта температур</string>
+    <string name="precip_layer">Карта осадков</string>
+    <string name="map">Карта погоды</string>
+
 </resources>

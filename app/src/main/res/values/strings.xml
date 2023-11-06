@@ -23,4 +23,8 @@
     <string name="now">Now</string>
     <string name="m_s">m/s</string>
     <string name="mm_hg">mm Hg</string>
+    <string name="wind_layer">Wind layer</string>
+    <string name="temp_layer">Temperature layer</string>
+    <string name="precip_layer">Precipitation layer</string>
+    <string name="map">Weather map</string>
 </resources>

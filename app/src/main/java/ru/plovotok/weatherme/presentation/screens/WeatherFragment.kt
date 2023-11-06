@@ -63,8 +63,17 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
             (requireActivity() as WeatherActivity).setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
             findNavController().navigate(R.id.action_weatherFragment_to_addLocationFragment)
 //            findNavController().navigate(R.id.action_weatherFragment_to_testFragment)
+//            findNavController().navigate(R.id.action_weatherFragment_to_mapFragment)
 
         }
+
+        binding.head.root.alpha = 0f
+        binding.weatherInfoRv.alpha = 0f
+        binding.hourlyForecastLayout.alpha = 0f
+        binding.chanceOfRainLayout.alpha = 0f
+        binding.weatherMapButton.root.alpha = 0f
+        binding.sunViewLayout.alpha = 0f
+        binding.astroInfoRv.alpha = 0f
 
         with(binding.weatherInfoRv) {
             adapter = weatherInfoAdapter
@@ -94,10 +103,14 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 //        binding.rainChanceRv.edgeEffectFactory = BaseEdgeEffectFactory<ChanceOfRainItemLayoutBinding, ChanceOfPrecipitaion>()
         binding.rootScroll.setOnRefreshListener { viewModel.getWeatherForecast() }
 
-        collectSunState()
-        collectWeather()
-        collectRainChances()
-        collectHourForecast()
+        binding.weatherMapButton.root.setOnClickListener {
+            if (nowIsDay == null) return@setOnClickListener
+            val nowWeather = defineWeatherByCondition(iconCode = currentCond, isDay = nowIsDay!!)
+            (requireActivity() as WeatherActivity).setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
+            findNavController().navigate(R.id.action_weatherFragment_to_mapFragment)
+        }
+
+
 //        collectHeaderInfo()
     }
 
@@ -117,6 +130,12 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                 is UIState.Success -> {
                     state.data?.let { weatherInfoAdapter.loadItems(items = it) }
                     weatherInfoAdapter.notifyDataSetChanged()
+
+                    binding.weatherInfoRv
+                        .animate()
+                        .alpha(1f)
+                        .setDuration(400L)
+                        .start()
                 }
                 else -> {}
             }
@@ -130,6 +149,12 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                 is UIState.Success -> {
                     state.data?.let { hourAdapter.loadItems(items = it) }
                     hourAdapter.notifyDataSetChanged()
+
+                    binding.hourlyForecastLayout
+                        .animate()
+                        .alpha(1f)
+                        .setDuration(400L)
+                        .start()
                 }
                 else -> {}
             }
@@ -142,6 +167,12 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                 is UIState.Success -> {
                     state.data?.let { chancesAdapter.loadItems(items = it) }
                     chancesAdapter.notifyDataSetChanged()
+
+                    binding.chanceOfRainLayout
+                        .animate()
+                        .alpha(1f)
+                        .setDuration(400L)
+                        .start()
                 }
                 else -> {}
             }
@@ -163,6 +194,18 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                             AstroInfo(type = AstroType.SUNSET, time = riseSetTimes.sunSetTime)
                         ))
                         sunStateAdapter.notifyDataSetChanged()
+
+                        binding.sunViewLayout
+                            .animate()
+                            .alpha(1f)
+                            .setDuration(400L)
+                            .start()
+
+                        binding.astroInfoRv
+                            .animate()
+                            .alpha(1f)
+                            .setDuration(400L)
+                            .start()
                     }
 
                 }
@@ -173,6 +216,10 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 
     override fun onResume() {
         super.onResume()
+        collectSunState()
+        collectWeather()
+        collectRainChances()
+        collectHourForecast()
         collectHeaderInfo()
     }
 
@@ -215,6 +262,18 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                         minTemp.text = "$nightText: ${headerInfo?.minTemp?.toInt()}°"
                         maxTemp.text = "$dayText: ${headerInfo?.maxTemp?.toInt()}°"
                         date.text = headerInfo?.time
+
+                        binding.head.root
+                            .animate()
+                            .alpha(1f)
+                            .setDuration(400L)
+                            .start()
+
+                        binding.weatherMapButton.root
+                            .animate()
+                            .alpha(1f)
+                            .setDuration(400L)
+                            .start()
                     }
 
                 }

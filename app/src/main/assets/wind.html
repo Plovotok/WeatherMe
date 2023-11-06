@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display a wind layer</title>
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.css" rel="stylesheet" />
+  <script src="https://cdn.maptiler.com/maptiler-weather/v1.1.0/maptiler-weather.umd.min.js"></script>
+  <style>
+    body { margin: 0; padding: 0; font-family: sans-serif; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    #time-info{ position: fixed; width: 60vw; bottom: 0; z-index: 1; margin: 10px; text-shadow: 0px 0px 5px black; color: white; font-size: 18px; font-weight: 500; text-align: center; left: 0; right: 0; margin: auto; padding: 20px;}
+    #time-slider{ width: 100%; height: fit-content; left: 0; right: 0; z-index: 1; filter: drop-shadow(0 0 7px #000a); margin-top: 10px;}
+    #time-text{ font-size: 12px; font-weight: 600;}
+    #pointer-data{ z-index: 1; position: fixed; font-size: 20px; font-weight: 900; margin: 27px 0px 0px 10px; color: #fff; text-shadow: 0px 0px 10px #0007;}
+    #variable-name{ z-index: 1; position: fixed; font-size: 20px; font-weight: 500; margin: 5px 0px 0px 10px; color: #fff; text-shadow: 0px 0px 10px #0007;}
+    .button{ cursor: pointer; width: auto; padding: 8px; border-radius: 3px; font-size: 10px; text-align: center; color: #fff; background: #3174ff; font-family: sans-serif; font-weight: bold;}
+  </style>
+</head>
+<body>
+  <div id="time-info">
+    <span id="time-text"></span>
+    <button id="play-pause-bt" class="button">Play 3600x</button>
+    <input type="range" id="time-slider" min="0" max="11" step="1">
+  </div>
+  <div id="variable-name">Wind</div>
+  <div id="pointer-data"></div>
+  <div id="map"></div>
+  <script>
+      maptilersdk.config.apiKey = 'fXim7Ni65DIFdKO7LlcC';
+      const map = (window.map = new maptilersdk.Map({
+        container: 'map', // container's id or the HTML element to render the map
+        style: maptilersdk.MapStyle.BACKDROP,
+        zoom: 4,
+        center: [0, 40]
+      }));
+
+      const timeInfoContainer = document.getElementById("time-info");
+      const timeTextDiv = document.getElementById("time-text");
+      const timeSlider = document.getElementById("time-slider");
+      const playPauseButton = document.getElementById("play-pause-bt");
+      const pointerDataDiv = document.getElementById("pointer-data");
+      let pointerLngLat = null;
+
+      const weatherLayer = new maptilerweather.WindLayer();
+
+      map.on('load', function () {
+        map.setPaintProperty("Water", 'fill-color', "rgba(0, 0, 0, 0.4)");
+        map.addLayer(weatherLayer, 'Water');
+      });
+
+      timeSlider.addEventListener("input", (evt) => {
+        weatherLayer.setAnimationTime(parseInt(timeSlider.value / 1000))
+      });
+
+      // Event called when all the datasource for the next days are added and ready.
+      // From now on, the layer nows the start and end dates.
+      weatherLayer.on("sourceReady", event => {
+        const startDate = weatherLayer.getAnimationStartDate();
+        const endDate = weatherLayer.getAnimationEndDate();
+        const currentDate = weatherLayer.getAnimationTimeDate();
+        refreshTime()
+
+        timeSlider.min = +startDate;
+        timeSlider.max = +endDate;
+        timeSlider.value = +currentDate;
+      });
+
+      // Called when the animation is progressing
+      weatherLayer.on("tick", event => {
+        refreshTime();
+        updatePointerValue(pointerLngLat);
+      });
+
+      // Called when the time is manually set
+      weatherLayer.on("animationTimeSet", event => {
+        refreshTime()
+      });
+
+      // When clicking on the play/pause
+      let isPlaying = false;
+      playPauseButton.addEventListener("click", () => {
+        if (isPlaying) {
+          weatherLayer.animateByFactor(0);
+          playPauseButton.innerText = "Play 3600x";
+        } else {
+          weatherLayer.animateByFactor(3600);
+          playPauseButton.innerText = "Pause";
+        }
+
+        isPlaying = !isPlaying;
+      });
+
+      // Update the date time display
+      function refreshTime() {
+        const d = weatherLayer.getAnimationTimeDate();
+        timeTextDiv.innerText = d.toString();
+        timeSlider.value = +d;
+      }
+
+      map.on('mouseout', function(evt) {
+        if (!evt.originalEvent.relatedTarget) {
+          pointerDataDiv.innerText = "";
+          pointerLngLat = null;
+        }
+      });
+
+      function updatePointerValue(lngLat) {
+        if (!lngLat) return;
+        pointerLngLat = lngLat;
+        const value = weatherLayer.pickAt(lngLat.lng, lngLat.lat);
+        if (!value) {
+          pointerDataDiv.innerText = "";
+          return;
+        }
+        pointerDataDiv.innerText = `${value.speedMetersPerSecond.toFixed(1)} m/s`
+      }
+
+      map.on('mousemove', (e) => {
+        updatePointerValue(e.lngLat);
+      });
+  </script>
+</body>
+</html>

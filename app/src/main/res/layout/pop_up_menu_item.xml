@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/layer_name"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/body_regular"
+    android:textColor="@color/weather_info_icon"
+    android:padding="16dp"
+    android:ellipsize="end"
+    android:background="@null"
+    android:text="layer name"
+    android:maxLines="1" />
