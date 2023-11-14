@@ -41,7 +41,6 @@ class HomeWeatherWidget : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         // There may be multiple widgets active, so update all of them
-//        Toast.makeText(context, myWeatherService.toString(), Toast.LENGTH_SHORT).show()
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId, myWeatherService)
         }
@@ -49,9 +48,6 @@ class HomeWeatherWidget : AppWidgetProvider() {
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         // When the user deletes the widget, delete the preference associated with it.
-//        for (appWidgetId in appWidgetIds) {
-//            deleteTitlePref(context, appWidgetId)
-//        }
     }
 
     override fun onEnabled(context: Context) {
@@ -87,15 +83,6 @@ internal fun updateAppWidget(
         // Construct the RemoteViews object
         val views = RemoteViews(context.packageName, R.layout.home_weather_widget)
 
-//        Toast.makeText(context, "UPDATE", Toast.LENGTH_SHORT).show()
-//        val myIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, context, HomeWidget::class.java)
-//        val pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, PendingIntent.FLAG_IMMUTABLE)
-//        val pendingIntent = PendingIntent.getActivity(
-//            context,
-//            0,
-//            myIntent,
-//            PendingIntent.FLAG_IMMUTABLE
-//        )
         views.setOnClickPendingIntent(R.id.home_widget_refresh_button, WidgetUtils().requestWidgetUpdatePendingIntent(context, true))
 
         views.setTextViewText(R.id.home_widget_temp_text, temp)

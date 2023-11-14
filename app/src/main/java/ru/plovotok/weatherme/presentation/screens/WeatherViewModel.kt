@@ -2,6 +2,7 @@ package ru.plovotok.weatherme.presentation.screens
 
 import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -78,7 +79,7 @@ class WeatherViewModel @Inject constructor(private val weatherService : WeatherS
                     break
                 }
             }
-
+            delay(500L)
 
             _headerInfo.success(data = HeaderInfo(
                 location = "${location.name}, ${location.country}",

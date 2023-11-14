@@ -27,13 +27,10 @@ import ru.plovotok.weatherme.presentation.ext.hasCyrillic
 class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), LocationsAdapter.LocationItemClickListener {
 
     private var currentInputString = ""
-//    private val viewModel : AddLocationViewModel by viewModels()
     private val viewModel : AddLocationViewModel by viewModels()
 
     private val serverLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.SERVER_LOCATIONS)
     private val myLocationsAdapter = LocationsAdapter(this, LocationsAdapter.Type.MY_LOCATIONS)
-//    private val myLocationsAdapter = TestAdapter()
-//    /private val myLocationsAdapter = NewTestAdapter()
 
     private var isNowEditing: Boolean = false
 
@@ -59,7 +56,10 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
             invalidateItemDecorations()
         }
 
-        setToolbar(toolbar = binding.toolbar, title = resources.getString(R.string.locations), backButtonEnabled = true, addButtonEnabled = false, switchEnabled = false)
+        setToolbar(
+            toolbar = binding.toolbar,
+            resources.getString(R.string.locations),
+            backButtonEnabled = true, addButtonEnabled = false, switchEnabled = false)
         binding.toolbar.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -162,7 +162,6 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
 
         viewLifecycleOwner.lifecycleScope.launch {
             while (binding.myLocationsRv.isComputingLayout) delay(100L)
-
         }
 
         val dialog = SetAsFavouriteLocationFragment(location = item, dialogListener = object : SetAsFavouriteLocationFragment.DialogListener {

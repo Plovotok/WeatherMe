@@ -1,6 +1,5 @@
 package ru.plovotok.weatherme.presentation.screens
 
-import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,12 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddLocationViewModel @Inject constructor(
-    val repository: LocationsRepository,
+    private val repository: LocationsRepository,
     private val weatherService : WeatherService,
     private val localStorage : ILocalStorage
-    ) : BaseViewModel() {
-
-//    private val weatherService = WeatherService.newInstance()
+) : BaseViewModel() {
 
     private val _locationList : MutableStateFlow<UIState<List<LocationResponse?>?>> = MutableStateFlow(UIState.Idle())
     val locationList = _locationList.asStateFlow()
@@ -50,36 +47,25 @@ class AddLocationViewModel @Inject constructor(
     }
 
     fun addLocation(location: LocationResponse) = vms.launch(dio) {
-        Log.d("Room", "adding ${location.name}")
         repository.addLocation(location.toDBEntity())
         getLocationsList()
     }
 
     fun removeLocation(location : LocationResponse) = vms.launch {
-
-        Log.d("Room", "deleting ${location.name}")
         repository.removeLocationById(location.id)
-
         getLocationsList()
     }
 
     fun setLocationAsFavourite(location : LocationResponse) {
-//        val localStorage = LocalStorage.newInstance()
         localStorage.save(LocalStorage.FAVOURITE_LOCATION, location.toJson())
     }
 
     fun addToEditingList(item : LocationResponse) {
-
         activeEditingList.add(item)
-        Log.d("Room", "added:  ${item.name}")
-        Log.d("Room", "deletingList:  ${activeEditingList}")
     }
 
     fun removeFromEditingList(item : LocationResponse) {
-
         activeEditingList.remove(item)
-        Log.d("Room", "removed:  ${item.name}")
-        Log.d("Room", "deletingList:  ${activeEditingList}")
     }
 
     fun clearEditingList() {
@@ -87,10 +73,8 @@ class AddLocationViewModel @Inject constructor(
     }
 
     fun removeActiveListLocations() = vms.launch {
-        Log.d("Room", "deletingList:  ${activeEditingList}")
         val deletingJob = vms.launch {
             activeEditingList.forEach { location ->
-                Log.d("Room", "deleting from bd ${location.name}")
                 repository.removeLocationById(location.id)
             }
         }

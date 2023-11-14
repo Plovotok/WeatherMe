@@ -74,7 +74,6 @@ class SunStateView : View {
         flags = Paint.ANTI_ALIAS_FLAG
         style = Paint.Style.FILL_AND_STROKE
         strokeWidth = 3f
-//        color = Color.WHITE
 
     }
 
@@ -185,9 +184,7 @@ class SunStateView : View {
         canvas.drawCircle(cx, cy, sunRadius / 3, sunPaint)
 
         sunPaint.color = Color.BLACK
-
         val degreeDis = defineVerticalDegreeDis(cy, horizontalLineHeight)
-
 //        Draw shadow
         canvas.drawArc(
             RectF(cx - sunRadius/3, cy - sunRadius/3, cx + sunRadius/3, cy + sunRadius/3),
@@ -197,18 +194,14 @@ class SunStateView : View {
     }
 
     private fun defineVerticalDegreeDis(cy: Float, lineY : Float) : Float {
-        Log.w(TAG, "center y: $cy")
-        Log.w(TAG, "line y: $lineY")
         if (abs(cy - lineY) <= sunRadius/3) {
             if ((cy - lineY) < 0 ) {
                 val deltaH = lineY - cy
                 val angle = acos(deltaH / (sunRadius/3))
-                Log.w(TAG, "angle: $angle")
                 return Math.toDegrees(angle.toDouble()).toFloat()
             } else {
                 val deltaH = cy - lineY
                 val angle = acos(deltaH / (sunRadius/3))
-                Log.w(TAG, "angle: ${180f - angle}")
                 return 180f - Math.toDegrees(angle.toDouble()).toFloat()
             }
         } else {
@@ -232,7 +225,6 @@ class SunStateView : View {
             0.5f
         }
 
-        Log.i(TAG, "percents : $percentage")
         return percentage
     }
 
@@ -246,15 +238,9 @@ class SunStateView : View {
         var tempProgress = 0f
 
         if (currentTime in correctMiddleNightTime until MILLIS_IN_DAY) {
-
-            Log.e(TAG, "currentTime : $currentTime, field 1, progress : $tempProgress")
-//            progress = (currentTime.toFloat() / MILLIS_IN_DAY * 100)
             tempProgress = (currentTime.toFloat() / MILLIS_IN_DAY * 100)
         } else if (currentTime in 0 until correctMiddleNightTime) {
-
             val innerProgress = (MILLIS_IN_DAY - correctMiddleNightTime).toFloat() * 100 / MILLIS_IN_DAY
-            Log.e(TAG, "currentTime : $currentTime, field 2, progress : $tempProgress")
-//            progress = innerProgress + currentTime.toFloat() * 100 / MILLIS_IN_DAY
             tempProgress = innerProgress + currentTime.toFloat() * 100 / MILLIS_IN_DAY
         }
 

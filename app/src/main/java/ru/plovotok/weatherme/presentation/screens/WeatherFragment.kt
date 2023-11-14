@@ -94,13 +94,6 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
             adapter = sunStateAdapter
         }
 
-//        OverScrollDecoratorHelper.setUpOverScroll(binding.rootScroll)
-//        OverScrollDecoratorHelper.setUpOverScroll(binding.hourlyForecastRv, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
-//        OverScrollDecoratorHelper.setUpOverScroll(binding.rainChanceRv, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
-//        VerticalOverScrollBounceEffectDecorator(RecyclerViewOverScrollDecorAdapter(binding.rainChanceRv))
-//        VerticalOverScrollBounceEffectDecorator(ScrollViewOverScrollDecorAdapter(binding.rootScroll))
-
-//        binding.rainChanceRv.edgeEffectFactory = BaseEdgeEffectFactory<ChanceOfRainItemLayoutBinding, ChanceOfPrecipitaion>()
         binding.rootScroll.setOnRefreshListener { viewModel.getWeatherForecast() }
 
         binding.weatherMapButton.root.setOnClickListener {
@@ -110,8 +103,6 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
             findNavController().navigate(R.id.action_weatherFragment_to_mapFragment)
         }
 
-
-//        collectHeaderInfo()
     }
 
     override fun onPause() {
@@ -237,10 +228,6 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                         val daysLeft = (it / SunStateView.SECONDS_PER_DAY).toInt()
                         val millis = (it - daysLeft * SunStateView.SECONDS_PER_DAY + deltaHour * 60 * 60) * 1000
 
-//                        val millis = (60660000 * 1.02).toLong() - 1L
-//                        val millis = 27900000L + 1L
-//                        val millis = 61560000L + 1L
-
                         binding.sunView.setCurrentTime(millis)
                     }
 
@@ -286,13 +273,11 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
         val hoursRise = data[0].time.substring(0, 5).split(":").first()
         val minutesRise = data[0].time.substring(0, 5).split(":").last()
         val timeInMillisRise = hoursRise.toLong().times((60 * 60 * 1000)) + minutesRise.toLong().times((60 * 1000))
-        Log.d("SunState", "rise : ${timeInMillisRise}")
 
         val hoursSet = data[1].time.substring(0, 5).split(":").first().toInt() + 12
         val minutesSet = data[1].time.substring(0, 5).split(":").last()
 
         val timeInMillisSet = hoursSet.toLong().times((60 * 60 * 1000)) + minutesSet.toLong().times((60 * 1000))
-        Log.d("SunState", "set : ${timeInMillisSet}")
         val riseString = "$hoursRise:$minutesRise"
         val setString = "$hoursSet:$minutesSet"
         return SunData(timeInMillisRise, timeInMillisSet, riseString, setString)

@@ -13,27 +13,4 @@ abstract class AppDatabase : RoomDatabase(){
         const val TAG = "App-Database"
     }
 
-//    companion object {
-//        @Volatile
-//        private var INSTANCE : AppDatabase? = null
-//
-//        fun getInstance(appContext : Context) : AppDatabase {
-//            synchronized(this) {
-//                var instance = INSTANCE
-//
-//                if (instance == null) {
-//                    instance = Room.databaseBuilder(
-//                        context = appContext,
-//                        klass = AppDatabase::class.java,
-//                        name = "locations"
-//                    )
-//                        .fallbackToDestructiveMigration()
-//                        .build()
-//
-//                    INSTANCE = instance
-//                }
-//                return instance
-//            }
-//        }
-//    }
 }

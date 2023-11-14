@@ -20,10 +20,9 @@ class LocationsRepository @Inject constructor(private val dao : WeatherLocations
         dao.deleteLocationById(id)
     }
 
-    suspend fun getLocations() : List<WeatherLocationEntity>? {
-        val locationsList = dao.getAllLocations()
+    suspend fun getLocations(): List<WeatherLocationEntity>? {
 
 //        _locations.emit(locationsList)
-        return locationsList
+        return dao.getAllLocations()
     }
 }
