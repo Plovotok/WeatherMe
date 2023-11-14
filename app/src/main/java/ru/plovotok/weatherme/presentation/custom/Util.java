@@ -13,4 +13,5 @@ public class Util {
         windowManager.getDefaultDisplay().getMetrics(metrics);
         return metrics.density;
     }
+
 }

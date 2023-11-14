@@ -27,4 +27,11 @@
     <string name="temp_layer">Temperature layer</string>
     <string name="precip_layer">Precipitation layer</string>
     <string name="map">Weather map</string>
+    <string name="appwidget_text">Sunny</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Current weather widget</string>
+    <string name="locations">Locations</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.WeatherMe.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.WeatherMe.AppWidgetContainer"
+    android:orientation="vertical"
+    android:background="@drawable/card_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/home_widget_location"
+            style="@style/body_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="location_text"
+            android:text="Moscow"
+            android:textStyle="bold|italic" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/home_widget_cond_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/sunny_day"/>
+
+
+            <TextView
+                android:id="@+id/home_widget_temp_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/body_medium"
+                android:text="20°"
+                android:layout_gravity="center_horizontal|bottom"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/home_widget_refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignParentEnd="true"
+        android:src="@android:drawable/ic_popup_sync" />
+
+</RelativeLayout>

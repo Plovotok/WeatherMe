@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.plovotok.weatherme.R
 import ru.plovotok.weatherme.databinding.FragmentAddLocationBinding
 import ru.plovotok.weatherme.domain.models.LocationResponse
 import ru.plovotok.weatherme.presentation.adapters.locations.LocationsAdapter
@@ -58,7 +59,7 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
             invalidateItemDecorations()
         }
 
-        setToolbar(toolbar = binding.toolbar, title = "Добавить локацию", backButtonEnabled = true, addButtonEnabled = false, switchEnabled = false)
+        setToolbar(toolbar = binding.toolbar, title = resources.getString(R.string.locations), backButtonEnabled = true, addButtonEnabled = false, switchEnabled = false)
         binding.toolbar.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -133,9 +134,6 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
                 is UIState.Success -> {
                     if (!state.data.isNullOrEmpty()) {
                         myLocationsAdapter.difLoadItems(state.data)
-//                        myLocationsAdapter.loadItems(state.data)
-//                        myLocationsAdapter.submitList(state.data.toMutableList())
-//                        myLocationsAdapter.notifyDataSetChanged()
                     }
                 }
                 else -> {}

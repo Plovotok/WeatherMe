@@ -23,7 +23,6 @@
     <color name="gray_600">#FF757575</color>
 
 
-
     <color name="seed">#0082DF</color>
     <color name="md_theme_light_primary">#0060A8</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
@@ -85,5 +84,7 @@
     <color name="md_theme_dark_surfaceTint">#A1C9FF</color>
     <color name="md_theme_dark_outlineVariant">#43474E</color>
     <color name="md_theme_dark_scrim">#000000</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
 
 </resources>

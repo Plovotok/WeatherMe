@@ -1,5 +1,6 @@
 package ru.plovotok.weatherme.localstorage
 
+import android.content.Context
 import android.content.SharedPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,11 +32,25 @@ class LocalStorage @Inject constructor(
 
     companion object {
 
+        private var INSTANCE: LocalStorage? = null
         const val TAG = "local-storage"
 
         const val API_TOKEN = "api-token"
         const val LAST_LOCATION = "last-location"
         const val FAVOURITE_LOCATION = "favourite-location"
+
+        fun init(context: Context) {
+            val sharedPreferences = context.getSharedPreferences(TAG, Context.MODE_PRIVATE)
+            if (INSTANCE == null) {
+                INSTANCE = LocalStorage(sharedPreferences = sharedPreferences)
+            }
+
+        }
+
+        fun newInstance(): LocalStorage {
+            if (INSTANCE != null) return INSTANCE!!
+            throw Exception("LocalStorage is not initialized. Use LocalStorage.init(...)")
+        }
 
     }
 

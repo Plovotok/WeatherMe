@@ -17,9 +17,9 @@ class SetAsFavouriteLocationFragment(private val location : LocationResponse, pr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textView.text = "Set ${location.name} as favourite location?"
+        binding.textView.text = "Set ${location.name} as default location?"
 
-        binding.agreeButton.button.text = "Yes"
+        binding.agreeButton.button.text = resources.getString(R.string.yes)
         binding.agreeButton.button.backgroundTintList =
             ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.agree_button_color))
         binding.agreeButton.button.setOnClickListener {
@@ -27,7 +27,7 @@ class SetAsFavouriteLocationFragment(private val location : LocationResponse, pr
             dismiss()
         }
 
-        binding.dismissButton.button.text = "No"
+        binding.dismissButton.button.text = resources.getString(R.string.no)
         binding.dismissButton.button.backgroundTintList =
             ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.disagree_button_color))
         binding.dismissButton.button.setOnClickListener {

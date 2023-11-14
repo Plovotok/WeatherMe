@@ -26,5 +26,12 @@
     <string name="temp_layer">Карта температур</string>
     <string name="precip_layer">Карта осадков</string>
     <string name="map">Карта погоды</string>
+    <string name="appwidget_text">Солнечно</string>
+    <string name="configure">Редактировать</string>
+    <string name="add_widget">Добавить виджет</string>
+    <string name="app_widget_description">Виджет текущей погоды</string>
+    <string name="locations">Локации</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 
 </resources>
