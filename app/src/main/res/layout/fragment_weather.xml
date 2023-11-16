@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <com.factor.bouncy.BouncyNestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:fling_animation_size=".7"
@@ -49,7 +49,6 @@
                 android:background="@drawable/card_background"
                 android:orientation="vertical"
                 android:paddingVertical="16dp"
-                android:layout_marginTop="-8dp"
                 android:layout_marginHorizontal="16dp"
                 android:stateListAnimator="@animator/button_press_animator"
                 android:clickable="true"
@@ -152,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="16dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/card_background"
                 android:padding="16dp"
                 android:elevation="4dp">
@@ -166,7 +165,6 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/astro_info_rv"
-                android:layout_marginTop="-44dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
@@ -179,7 +177,7 @@
 
         </LinearLayout>
 
-        </com.factor.bouncy.BouncyNestedScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include

@@ -22,8 +22,6 @@ class WeatherInfoAdapter : BaseAdapter<WeatherInfoItemLayoutBinding, WeatherInfo
 
             var valueDimension = ""
 
-//            binding.name.text = item.name
-
             with(binding.weatherInfoIcon) {
                 when(item.type) {
                     WeatherInfoType.WIND_SPEED -> {
