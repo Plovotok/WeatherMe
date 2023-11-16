@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <androidx.core.widget.NestedScrollView
+        <com.factor.bouncy.BouncyNestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:fling_animation_size=".7"
@@ -36,7 +36,6 @@
                 android:nestedScrollingEnabled="true"
                 android:layout_marginTop="8dp"
                 android:layout_marginHorizontal="8dp"
-                android:fitsSystemWindows="true"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
                 tools:itemCount="4"
@@ -50,6 +49,7 @@
                 android:orientation="vertical"
                 android:paddingVertical="16dp"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
                 android:stateListAnimator="@animator/button_press_animator"
                 android:clickable="true"
                 android:elevation="4dp"
@@ -144,40 +144,38 @@
                 android:layout_marginTop="16dp"
                 android:layout_height="wrap_content"/>
 
-
             <LinearLayout
                 android:id="@+id/sunView_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="44dp"
+                android:paddingVertical="8dp"
                 android:background="@drawable/card_background"
-                android:padding="16dp"
                 android:elevation="4dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/astro_info_rv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/sun_state_item_layout"
+                    tools:itemCount="2"/>
 
                 <ru.plovotok.weatherme.presentation.custom.SunStateView
                     android:id="@+id/sun_view"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp" />
+                    android:layout_height="match_parent" />
+
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/astro_info_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginBottom="16dp"
-                android:fitsSystemWindows="true"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                tools:itemCount="2"
-                tools:listitem="@layout/weather_info_item_layout" />
-
         </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </com.factor.bouncy.BouncyNestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include

@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RadialGradient
@@ -65,7 +66,7 @@ class SunStateView : View {
     private var linePaint = Paint().apply {
         flags = Paint.ANTI_ALIAS_FLAG
         style = Paint.Style.STROKE
-        strokeWidth = 3f
+        strokeWidth = 4f
         isAntiAlias = true
         color = lineColor
     }
@@ -107,7 +108,6 @@ class SunStateView : View {
         a.recycle()
     }
 
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
@@ -131,21 +131,32 @@ class SunStateView : View {
             }
         }
 
-        canvas.drawPath(path, linePaint)
+        drawSunPath(canvas, path)
+        drawHorizontalLine(canvas)
+        drawSunByCoordinates(canvas)
+    }
 
+    private fun drawSunPath(canvas: Canvas, path: Path) {
+        linePaint.shader = LinearGradient(
+            0f, (paddingTop + contentHeight).toFloat(), 0f, 0f,
+            Color.TRANSPARENT, lineColor, Shader.TileMode.CLAMP)
+        canvas.drawPath(path, linePaint)
+    }
+
+    private fun drawHorizontalLine(canvas: Canvas) {
         horizontalLineHeight = defineHorizontalLinePercentage() * contentHeight +
                 paddingTop + (linePaint.strokeWidth/2).toInt() + sunRadius
 
+        linePaint.shader = RadialGradient(
+            width.toFloat() / 2, (paddingTop + contentHeight).toFloat(),
+            width.toFloat() / 2,
+            Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP )
         canvas.drawLine(
-            paddingLeft.toFloat(),
+            paddingLeft.toFloat() + width * 0.1f,
             horizontalLineHeight,
-            (paddingLeft + contentWidth).toFloat(),
+            (paddingLeft + contentWidth).toFloat() - width * 0.1f,
             horizontalLineHeight,
             linePaint)
-
-        val cx = contentWidth * progress/100
-        val cor = defineCorrDeltaX()
-        drawSunByCoordinates(cx + cor, cy = countHeightByCosValue(cx + cor - paddingLeft), canvas)
     }
 
     private fun defineCorrDeltaX() : Float {
@@ -158,7 +169,11 @@ class SunStateView : View {
         }
     }
 
-    private fun drawSunByCoordinates(cx : Float, cy : Float, canvas : Canvas) {
+    private fun drawSunByCoordinates(canvas : Canvas) {
+        val cor = defineCorrDeltaX()
+        val cx = contentWidth * progress/100 + cor
+        val cy = countHeightByCosValue(cx + cor - paddingLeft)
+
         sunPaint.color = Color.WHITE
         sunPaint.shader = RadialGradient(cx, cy, sunRadius, Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP)
 
@@ -232,8 +247,9 @@ class SunStateView : View {
      * Set the current time of the day.
      * <p>
      * @param timeInMillis current time of the day in millis
+     * @param isPlayAnimation animate sun position changes, false by default
      */
-    fun setCurrentTime(timeInMillis : Long) {
+    fun setCurrentTime(timeInMillis : Long, isPlayAnimation: Boolean = false) {
         currentTime = timeInMillis
         var tempProgress = 0f
 
@@ -244,30 +260,36 @@ class SunStateView : View {
             tempProgress = innerProgress + currentTime.toFloat() * 100 / MILLIS_IN_DAY
         }
 
-        val animation = ObjectAnimator.ofFloat(this, "progress", 0f, tempProgress)
-        animation.interpolator = AccelerateDecelerateInterpolator()
-        animation.startDelay = 2_000L
-        animation.duration = 2_000L
-        animation.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {
-                Log.i(TAG, "start animation")
-                progress = 0f
-            }
+        if (!isPlayAnimation) {
+            progress = tempProgress
+        } else {
+            val animation = ObjectAnimator.ofFloat(this, "progress", 0f, tempProgress)
+            animation.interpolator = AccelerateDecelerateInterpolator()
+            animation.startDelay = 2_000L
+            animation.duration = 2_000L
+            animation.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                    Log.i(TAG, "start animation")
+                    progress = 0f
+                }
 
-            override fun onAnimationEnd(animation: Animator) {
-                Log.i(TAG, "end animation")
-                progress = tempProgress
-            }
+                override fun onAnimationEnd(animation: Animator) {
+                    Log.i(TAG, "end animation")
+                    progress = tempProgress
+                }
 
-            override fun onAnimationCancel(animation: Animator) {
-                Log.i(TAG, "cancel animation")
-            }
+                override fun onAnimationCancel(animation: Animator) {
+                    Log.i(TAG, "cancel animation")
+                }
 
-            override fun onAnimationRepeat(animation: Animator) {
-                Log.i(TAG, "repeat animation")
-            }
-        })
-        animation.start()
+                override fun onAnimationRepeat(animation: Animator) {
+                    Log.i(TAG, "repeat animation")
+                }
+            })
+            animation.start()
+        }
+
+
 //        invalidate()
     }
 
@@ -290,7 +312,7 @@ class SunStateView : View {
         delta = correctMiddleDayTime - MILLIS_IN_DAY / 2
         correctMiddleNightTime = delta
 
-        Log.i(TAG, "correctmiddleDayTime : $correctMiddleDayTime\n correctmiddleNightTime : $correctMiddleNightTime")
+        Log.i(TAG, "correctMiddleDayTime : $correctMiddleDayTime\n correctMiddleNightTime : $correctMiddleNightTime")
 
         invalidate()
     }

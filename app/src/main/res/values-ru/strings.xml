@@ -13,7 +13,7 @@
     <string name="feels_like">ощущается как</string>
     <string name="night">ночью</string>
     <string name="day">днем</string>
-    <string name="sunrise">Рассвет</string>
+    <string name="sunrise">Восход</string>
     <string name="sunset">Закат</string>
     <string name="wind_speed">Скорость ветра</string>
     <string name="humidity">Влажность</string>
