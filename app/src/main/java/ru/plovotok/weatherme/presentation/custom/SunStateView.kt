@@ -160,19 +160,23 @@ class SunStateView : View {
     }
 
     private fun defineCorrDeltaX() : Float {
-        return if (currentTime in (sunRiseTime*0.82).toLong()..(sunRiseTime*1.02).toLong()) {
-            -10f
-        } else if (currentTime in (sunSetTime*0.95).toLong()..(sunSetTime*1.02).toLong()) {
-            -10f
-        } else {
-            0f
+        return when (currentTime) {
+            in (sunRiseTime*0.82).toLong()..(sunRiseTime*1.02).toLong() -> {
+                -10f
+            }
+            in (sunSetTime*0.95).toLong()..(sunSetTime*1.02).toLong() -> {
+                -10f
+            }
+            else -> {
+                0f
+            }
         }
     }
 
     private fun drawSunByCoordinates(canvas : Canvas) {
         val cor = defineCorrDeltaX()
         val cx = contentWidth * progress/100 + cor
-        val cy = countHeightByCosValue(cx + cor - paddingLeft)
+        val cy = countHeightByCosValue(cx - paddingLeft)
 
         sunPaint.color = Color.WHITE
         sunPaint.shader = RadialGradient(cx, cy, sunRadius, Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP)
@@ -193,7 +197,7 @@ class SunStateView : View {
         } else {
             sunPaint.strokeWidth = 3f
             sunPaint.style = Paint.Style.FILL_AND_STROKE
-            sunPaint.shader = Shader()
+//            sunPaint.shader = Shader()
         }
 //        Draw Sun
         canvas.drawCircle(cx, cy, sunRadius / 3, sunPaint)
