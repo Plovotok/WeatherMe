@@ -108,6 +108,7 @@ class SunStateView : View {
         a.recycle()
     }
 
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
@@ -131,53 +132,52 @@ class SunStateView : View {
             }
         }
 
-        drawSunPath(canvas, path)
-        drawHorizontalLine(canvas)
-        drawSunByCoordinates(canvas)
-    }
-
-    private fun drawSunPath(canvas: Canvas, path: Path) {
-        linePaint.shader = LinearGradient(
-            0f, (paddingTop + contentHeight).toFloat(), 0f, 0f,
-            Color.TRANSPARENT, lineColor, Shader.TileMode.CLAMP)
+        setupLinearGradient()
         canvas.drawPath(path, linePaint)
-    }
 
-    private fun drawHorizontalLine(canvas: Canvas) {
         horizontalLineHeight = defineHorizontalLinePercentage() * contentHeight +
                 paddingTop + (linePaint.strokeWidth/2).toInt() + sunRadius
 
+        setupRadialGradient()
+
+        canvas.drawLine(
+            paddingLeft.toFloat(),
+            horizontalLineHeight,
+            (paddingLeft + contentWidth).toFloat(),
+            horizontalLineHeight,
+            linePaint)
+
+        val cx = contentWidth * progress/100
+        val cor = defineCorrDeltaX()
+        drawSunByCoordinates(cx + cor, cy = countHeightByCosValue(cx + cor - paddingLeft), canvas)
+    }
+
+    private fun defineCorrDeltaX() : Float {
+//        return if (currentTime in (sunRiseTime*0.82).toLong()..(sunRiseTime*1.02).toLong()) {
+//            -10f
+//        } else if (currentTime in (sunSetTime*0.95).toLong()..(sunSetTime*1.02).toLong()) {
+//            -10f
+//        } else {
+//            0f
+//        }
+
+        return 0f
+    }
+
+    private fun setupLinearGradient() {
+        linePaint.shader = LinearGradient(
+            0f, (paddingTop + contentHeight).toFloat(), 0f, 0f,
+            Color.TRANSPARENT, lineColor, Shader.TileMode.CLAMP)
+    }
+
+    private fun setupRadialGradient() {
         linePaint.shader = RadialGradient(
             width.toFloat() / 2, (paddingTop + contentHeight).toFloat(),
             width.toFloat() / 2,
             Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP )
-        canvas.drawLine(
-            paddingLeft.toFloat() + width * 0.1f,
-            horizontalLineHeight,
-            (paddingLeft + contentWidth).toFloat() - width * 0.1f,
-            horizontalLineHeight,
-            linePaint)
     }
 
-    private fun defineCorrDeltaX() : Float {
-        return when (currentTime) {
-            in (sunRiseTime*0.82).toLong()..(sunRiseTime*1.02).toLong() -> {
-                -10f
-            }
-            in (sunSetTime*0.95).toLong()..(sunSetTime*1.02).toLong() -> {
-                -10f
-            }
-            else -> {
-                0f
-            }
-        }
-    }
-
-    private fun drawSunByCoordinates(canvas : Canvas) {
-        val cor = defineCorrDeltaX()
-        val cx = contentWidth * progress/100 + cor
-        val cy = countHeightByCosValue(cx - paddingLeft)
-
+    private fun drawSunByCoordinates(cx : Float, cy : Float, canvas : Canvas) {
         sunPaint.color = Color.WHITE
         sunPaint.shader = RadialGradient(cx, cy, sunRadius, Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP)
 
@@ -193,11 +193,11 @@ class SunStateView : View {
         if (currentTime in sunRiseTime..sunSetTime) {
             sunPaint.strokeWidth = 3f
             sunPaint.style = Paint.Style.FILL_AND_STROKE
-            sunPaint.shader = Shader()
+            sunPaint.shader = null
         } else {
             sunPaint.strokeWidth = 3f
             sunPaint.style = Paint.Style.FILL_AND_STROKE
-//            sunPaint.shader = Shader()
+            sunPaint.shader = null
         }
 //        Draw Sun
         canvas.drawCircle(cx, cy, sunRadius / 3, sunPaint)
@@ -213,13 +213,13 @@ class SunStateView : View {
     }
 
     private fun defineVerticalDegreeDis(cy: Float, lineY : Float) : Float {
-        if (abs(cy - lineY) <= sunRadius/3) {
+        if (abs(cy - lineY - linePaint.strokeWidth/2) <= sunRadius/3) {
             if ((cy - lineY) < 0 ) {
-                val deltaH = lineY - cy
+                val deltaH = lineY - cy //+ linePaint.strokeWidth/2
                 val angle = acos(deltaH / (sunRadius/3))
                 return Math.toDegrees(angle.toDouble()).toFloat()
             } else {
-                val deltaH = cy - lineY
+                val deltaH = cy - lineY //+ linePaint.strokeWidth/2
                 val angle = acos(deltaH / (sunRadius/3))
                 return 180f - Math.toDegrees(angle.toDouble()).toFloat()
             }
@@ -251,9 +251,8 @@ class SunStateView : View {
      * Set the current time of the day.
      * <p>
      * @param timeInMillis current time of the day in millis
-     * @param isPlayAnimation animate sun position changes, false by default
      */
-    fun setCurrentTime(timeInMillis : Long, isPlayAnimation: Boolean = false) {
+    fun setCurrentTime(timeInMillis : Long) {
         currentTime = timeInMillis
         var tempProgress = 0f
 
@@ -264,36 +263,30 @@ class SunStateView : View {
             tempProgress = innerProgress + currentTime.toFloat() * 100 / MILLIS_IN_DAY
         }
 
-        if (!isPlayAnimation) {
-            progress = tempProgress
-        } else {
-            val animation = ObjectAnimator.ofFloat(this, "progress", 0f, tempProgress)
-            animation.interpolator = AccelerateDecelerateInterpolator()
-            animation.startDelay = 2_000L
-            animation.duration = 2_000L
-            animation.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) {
-                    Log.i(TAG, "start animation")
-                    progress = 0f
-                }
+        val animation = ObjectAnimator.ofFloat(this, "progress", 0f, tempProgress)
+        animation.interpolator = AccelerateDecelerateInterpolator()
+        animation.startDelay = 2_000L
+        animation.duration = 2_000L
+        animation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+                Log.i(TAG, "start animation")
+                progress = 0f
+            }
 
-                override fun onAnimationEnd(animation: Animator) {
-                    Log.i(TAG, "end animation")
-                    progress = tempProgress
-                }
+            override fun onAnimationEnd(animation: Animator) {
+                Log.i(TAG, "end animation")
+                progress = tempProgress
+            }
 
-                override fun onAnimationCancel(animation: Animator) {
-                    Log.i(TAG, "cancel animation")
-                }
+            override fun onAnimationCancel(animation: Animator) {
+                Log.i(TAG, "cancel animation")
+            }
 
-                override fun onAnimationRepeat(animation: Animator) {
-                    Log.i(TAG, "repeat animation")
-                }
-            })
-            animation.start()
-        }
-
-
+            override fun onAnimationRepeat(animation: Animator) {
+                Log.i(TAG, "repeat animation")
+            }
+        })
+        animation.start()
 //        invalidate()
     }
 
@@ -316,7 +309,7 @@ class SunStateView : View {
         delta = correctMiddleDayTime - MILLIS_IN_DAY / 2
         correctMiddleNightTime = delta
 
-        Log.i(TAG, "correctMiddleDayTime : $correctMiddleDayTime\n correctMiddleNightTime : $correctMiddleNightTime")
+        Log.i(TAG, "correctmiddleDayTime : $correctMiddleDayTime\n correctmiddleNightTime : $correctMiddleNightTime")
 
         invalidate()
     }

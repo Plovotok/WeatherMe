@@ -15,7 +15,7 @@
             android:id="@+id/time_image"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_container"
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/main_nav_graph" />
+            app:navGraph="@navigation/main_nav_graph"/>
 
         <com.github.matteobattilana.weather.WeatherView
             android:id="@+id/weatherView"

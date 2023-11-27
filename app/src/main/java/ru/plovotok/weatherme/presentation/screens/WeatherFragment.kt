@@ -227,8 +227,10 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                         val deltaHour = countDeltaHour(state.data.time)
                         val daysLeft = (it / SunStateView.SECONDS_PER_DAY).toInt()
                         val millis = (it - daysLeft * SunStateView.SECONDS_PER_DAY + deltaHour * 60 * 60) * 1000
+//                        val millis = (29400000L * 0.92).toLong()
+//                        val millis = (58680000L * 1.03).toLong()
 
-                        binding.sunView.setCurrentTime(timeInMillis = millis, isPlayAnimation = true)
+                        binding.sunView.setCurrentTime(timeInMillis = millis)
                     }
 
                     with(binding.head) {
