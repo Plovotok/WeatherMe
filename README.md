@@ -16,7 +16,7 @@ git clone https://github.com/Plovotok/WeatherMe.git
 # Configuration
 Step 2. Paste your weatherapi.com API-key and MapTiler API-key
 
-<a href="https://cdn.weatherapi.com"> <img src="https://cdn.weatherapi.com/v4/images/weatherapi_logo.png">
+<a href="https://www.weatherapi.com/"> <img src="https://cdn.weatherapi.com/v4/images/weatherapi_logo.png">
 </a>
 
 <a href="https://www.maptiler.com/"> <img src="https://cloud.maptiler.com/static/img/logo/maptiler-logo-adaptive-cloud.svg">
