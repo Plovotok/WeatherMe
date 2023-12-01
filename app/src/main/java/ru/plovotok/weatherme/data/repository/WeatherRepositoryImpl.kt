@@ -38,14 +38,22 @@ class WeatherRepositoryImpl @Inject constructor(private val client : HttpClient)
     }
 
     override suspend fun findLocationByQuery(query: String, lang : String): List<LocationResponseDTO?>? {
-        Log.d("Ktor-client", "$query, $lang")
-        val response = client.get("${Constants.SEARCH_URL}?key=${Constants.API_KEY}&q=$query")
-        Log.d("Ktor-client", response.request.url.encodedPathAndQuery)
-        Log.d("Ktor-client", "response body ----> ${response.body<String>()}")
+
+        return try {
+            Log.d("Ktor-client", "$query, $lang")
+            val response = client.get("${Constants.SEARCH_URL}?key=${Constants.API_KEY}&q=$query")
+            Log.d("Ktor-client", response.request.url.encodedPathAndQuery)
+            Log.d("Ktor-client", "response body ----> ${response.body<String>()}")
 //        Log.d("Ktor-client", response.request.toString())
 
-        val json = response.body<String>()
-        val listType = object : TypeToken<List<LocationResponseDTO>>() {}.type
-        return Gson().fromJson(json, listType)
+            val json = response.body<String>()
+            val listType = object : TypeToken<List<LocationResponseDTO>>() {}.type
+
+            Gson().fromJson(json, listType)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+
     }
 }

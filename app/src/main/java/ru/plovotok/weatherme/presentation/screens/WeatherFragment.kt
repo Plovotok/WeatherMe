@@ -2,7 +2,6 @@ package ru.plovotok.weatherme.presentation.screens
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -27,11 +26,12 @@ import ru.plovotok.weatherme.presentation.base.viewhelperclasses.AstroInfo
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.AstroType
 import ru.plovotok.weatherme.presentation.custom.SunData
 import ru.plovotok.weatherme.presentation.custom.SunStateView
+import ru.plovotok.weatherme.presentation.ext.openUrl
 import java.util.Calendar
 import java.util.TimeZone
 
 @AndroidEntryPoint
-class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
+class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     private val viewModel : WeatherViewModel by viewModels()
 
@@ -56,17 +56,8 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
             backButtonEnabled = false,
             addButtonEnabled = true,
             switchEnabled = false)
-        binding.toolbar.addButton.setOnClickListener {
-            if (nowIsDay == null) return@setOnClickListener
-            val nowWeather = defineWeatherByCondition(iconCode = currentCond, isDay = nowIsDay!!)
 
-            (requireActivity() as WeatherActivity).setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
-            findNavController().navigate(R.id.action_weatherFragment_to_addLocationFragment)
-//            findNavController().navigate(R.id.action_weatherFragment_to_testFragment)
-//            findNavController().navigate(R.id.action_weatherFragment_to_mapFragment)
-
-        }
-
+        binding.toolbar.backView.alpha = 0f
         binding.head.root.alpha = 0f
         binding.weatherInfoRv.alpha = 0f
         binding.hourlyForecastLayout.alpha = 0f
@@ -75,6 +66,13 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
         binding.sunViewLayout.alpha = 0f
         binding.astroInfoRv.alpha = 0f
 
+
+        setAdapters()
+        setListeners()
+
+    }
+
+    private fun setAdapters() {
         with(binding.weatherInfoRv) {
             adapter = weatherInfoAdapter
         }
@@ -93,26 +91,41 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
         with(binding.astroInfoRv) {
             adapter = sunStateAdapter
         }
+    }
+
+    private fun setListeners() {
+        binding.toolbar.addButton.setOnClickListener {
+            if (nowIsDay == null) return@setOnClickListener
+            val nowWeather = defineWeatherByCondition(iconCode = currentCond, isDay = nowIsDay!!)
+            (requireActivity() as WeatherActivity)
+                .setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
+
+            findNavController().navigate(R.id.action_weatherFragment_to_addLocationFragment)
+        }
 
         binding.rootScroll.setOnRefreshListener { viewModel.getWeatherForecast() }
 
         binding.weatherMapButton.root.setOnClickListener {
             if (nowIsDay == null) return@setOnClickListener
-            val nowWeather = defineWeatherByCondition(iconCode = currentCond, isDay = nowIsDay!!)
-            (requireActivity() as WeatherActivity).setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
+            val nowWeather =
+                defineWeatherByCondition(iconCode = currentCond, isDay = nowIsDay!!)
+            (requireActivity() as WeatherActivity)
+                .setTimeImage(nowWeather.backgroundResource, TypeOfPrecip.CLEAR, PrecipRate.CLEAR)
+
             findNavController().navigate(R.id.action_weatherFragment_to_mapFragment)
         }
 
-    }
+        binding.bouncyScroll.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            binding.toolbar.backView.alpha =
+                (scrollY.toFloat() / (binding.bouncyScroll.height * 0.35)).toFloat()
 
-    override fun onPause() {
-        super.onPause()
-        Log.i("Weather-Fragment", "Weather-Fragment onPause()")
-    }
+            binding.head.root.alpha =
+                1f - (scrollY.toFloat() / (binding.bouncyScroll.height * 0.25)).toFloat()
+        }
 
-    override fun onStop() {
-        super.onStop()
-        Log.i("Weather-Fragment", "Weather-Fragment onStop()")
+        binding.apiLogo.setOnClickListener {
+            openUrl("https://www.weatherapi.com/")
+        }
     }
 
     private fun collectWeather() = viewLifecycleOwner.lifecycleScope.launch {
@@ -207,6 +220,7 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
 
     override fun onResume() {
         super.onResume()
+
         collectSunState()
         collectWeather()
         collectRainChances()
@@ -220,15 +234,15 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                 is UIState.Success -> {
                     hideLoading()
                     binding.rootScroll.isRefreshing = false
+
                     val headerInfo = state.data
                     binding.toolbar.titleTextView.text = headerInfo?.location
 
                     state.data?.time_epoch?.let {
                         val deltaHour = countDeltaHour(state.data.time)
                         val daysLeft = (it / SunStateView.SECONDS_PER_DAY).toInt()
-                        val millis = (it - daysLeft * SunStateView.SECONDS_PER_DAY + deltaHour * 60 * 60) * 1000
-//                        val millis = (29400000L * 0.92).toLong()
-//                        val millis = (58680000L * 1.03).toLong()
+                        val millis =
+                            (it - daysLeft * SunStateView.SECONDS_PER_DAY + deltaHour * 60 * 60) * 1000
 
                         binding.sunView.setCurrentTime(timeInMillis = millis)
                     }
@@ -240,10 +254,19 @@ class WeatherFragment() : BaseFragment<FragmentWeatherBinding>() {
                         weatherDesc.text = headerInfo?.condition?.text
                         if (headerInfo != null) {
                             nowIsDay = headerInfo.isDay
-                            val screenWeather = defineWeatherByCondition(iconCode = headerInfo.condition!!.code, isDay = headerInfo.isDay)
+                            val screenWeather =
+                                defineWeatherByCondition(
+                                    iconCode = headerInfo.condition!!.code, isDay = headerInfo.isDay)
+
+                            binding.toolbar.backView.setBackgroundResource(screenWeather.toolbarDrawable)
 
                             weatherIcon.setImageResource(screenWeather.iconResource)
-                            (requireActivity() as WeatherActivity).setTimeImage(screenWeather.backgroundResource, screenWeather.precipType, screenWeather.precipRate)
+                            (requireActivity() as WeatherActivity)
+                                .setTimeImage(
+                                    screenWeather.backgroundResource,
+                                    screenWeather.precipType,
+                                    screenWeather.precipRate)
+
                             currentCond = headerInfo.condition.code
                         }
                         val nightText = resources.getString(R.string.night)

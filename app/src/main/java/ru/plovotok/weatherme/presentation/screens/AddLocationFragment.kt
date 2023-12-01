@@ -60,6 +60,7 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
             toolbar = binding.toolbar,
             resources.getString(R.string.locations),
             backButtonEnabled = true, addButtonEnabled = false, switchEnabled = false)
+        binding.toolbar.backView.alpha = 0f
         binding.toolbar.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -146,13 +147,13 @@ class AddLocationFragment : BaseFragment<FragmentAddLocationBinding>(), Location
     }
 
     override fun onItemAdd(item: LocationResponse) {
-        showSnack("${item.name} добавлено")
+        showSnack("Локация ${item.name} добавлена, не забудьте выбрать ее по умолчанию")
 
         viewModel.addLocation(item)
     }
 
     override fun onItemRemove(item: LocationResponse) {
-        showSnack("${item.name} удалено")
+        showSnack("Локация ${item.name} удалена")
 
         viewModel.removeLocation(item)
     }

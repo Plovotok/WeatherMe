@@ -20,6 +20,7 @@ import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.acos
 import kotlin.math.cos
+import kotlin.math.sin
 
 /**
  * View to show current sun position at the sky
@@ -140,12 +141,16 @@ class SunStateView : View {
 
         setupRadialGradient()
 
+        linePaint.strokeWidth = 3f
+
         canvas.drawLine(
             paddingLeft.toFloat(),
             horizontalLineHeight,
             (paddingLeft + contentWidth).toFloat(),
-            horizontalLineHeight,
+            horizontalLineHeight ,
             linePaint)
+
+        linePaint.strokeWidth = 4f
 
         val cx = contentWidth * progress/100
         val cor = defineCorrDeltaX()
@@ -153,15 +158,15 @@ class SunStateView : View {
     }
 
     private fun defineCorrDeltaX() : Float {
-//        return if (currentTime in (sunRiseTime*0.82).toLong()..(sunRiseTime*1.02).toLong()) {
-//            -10f
-//        } else if (currentTime in (sunSetTime*0.95).toLong()..(sunSetTime*1.02).toLong()) {
-//            -10f
-//        } else {
-//            0f
-//        }
 
-        return 0f
+        val value = sunRiseProgress
+        val tangAlpha = -sin(value * 2 * PI) * (2 * PI)
+
+        return if (currentTime > MILLIS_IN_DAY / 2) {
+            -((sunRadius / 2) / tangAlpha).toFloat()
+        } else {
+            ((sunRadius / 2) / tangAlpha).toFloat()
+        }
     }
 
     private fun setupLinearGradient() {
@@ -173,7 +178,7 @@ class SunStateView : View {
     private fun setupRadialGradient() {
         linePaint.shader = RadialGradient(
             width.toFloat() / 2, (paddingTop + contentHeight).toFloat(),
-            width.toFloat() / 2,
+            width.toFloat() / 2.2f,
             Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP )
     }
 
@@ -188,7 +193,7 @@ class SunStateView : View {
         sunPaint.shader = RadialGradient(cx, cy, sunRadius * 2f, Color.WHITE, Color.TRANSPARENT, Shader.TileMode.CLAMP)
 
 //        Draw Glare
-        canvas.drawCircle(cx, cy, sunRadius * 2, sunPaint)
+//        canvas.drawCircle(cx, cy, sunRadius * 2, sunPaint)
 
         if (currentTime in sunRiseTime..sunSetTime) {
             sunPaint.strokeWidth = 3f
@@ -213,7 +218,7 @@ class SunStateView : View {
     }
 
     private fun defineVerticalDegreeDis(cy: Float, lineY : Float) : Float {
-        if (abs(cy - lineY - linePaint.strokeWidth/2) <= sunRadius/3) {
+        if (abs(cy - lineY - linePaint.strokeWidth/2) <= (sunRadius/3)) {
             if ((cy - lineY) < 0 ) {
                 val deltaH = lineY - cy //+ linePaint.strokeWidth/2
                 val angle = acos(deltaH / (sunRadius/3))
@@ -243,8 +248,10 @@ class SunStateView : View {
         } else {
             0.5f
         }
+        Log.w(TAG, "horizontal percentage = $percentage")
 
         return percentage
+
     }
 
     /**
@@ -256,11 +263,18 @@ class SunStateView : View {
         currentTime = timeInMillis
         var tempProgress = 0f
 
-        if (currentTime in correctMiddleNightTime until MILLIS_IN_DAY) {
-            tempProgress = (currentTime.toFloat() / MILLIS_IN_DAY * 100)
-        } else if (currentTime in 0 until correctMiddleNightTime) {
-            val innerProgress = (MILLIS_IN_DAY - correctMiddleNightTime).toFloat() * 100 / MILLIS_IN_DAY
-            tempProgress = innerProgress + currentTime.toFloat() * 100 / MILLIS_IN_DAY
+//        if (currentTime in correctMiddleNightTime until MILLIS_IN_DAY) {
+//            tempProgress = (currentTime.toFloat() / MILLIS_IN_DAY * 100)
+//        } else if (currentTime in 0 until correctMiddleNightTime) {
+//            val innerProgress = (MILLIS_IN_DAY - correctMiddleNightTime).toFloat() * 100 / MILLIS_IN_DAY
+//            tempProgress = innerProgress + currentTime.toFloat() * 100 / MILLIS_IN_DAY
+//        }
+
+        if (currentTime in delta until MILLIS_IN_DAY) {
+            tempProgress = (currentTime - delta).toFloat() / MILLIS_IN_DAY * 100
+        } else if (currentTime in 0 until delta) {
+            val innerProgress = (MILLIS_IN_DAY - delta) / MILLIS_IN_DAY * 100
+            tempProgress = innerProgress + currentTime.toFloat() / MILLIS_IN_DAY * 100
         }
 
         val animation = ObjectAnimator.ofFloat(this, "progress", 0f, tempProgress)
@@ -297,19 +311,20 @@ class SunStateView : View {
      * @param sunSetTimeMillis sunset time in millis
      */
     fun setSunRiseAndSunSetTime(sunRiseTimeMillis : Long, sunSetTimeMillis : Long) {
+
         sunRiseTime = sunRiseTimeMillis
         sunSetTime = sunSetTimeMillis
 
-        sunRiseProgress = sunRiseTime.toDouble() / MILLIS_IN_DAY
-        Log.i(TAG, "sunRiseTime : $sunRiseTime")
-        sunSetProgress = sunSetTime.toDouble() / MILLIS_IN_DAY
-        Log.i(TAG, "sunSetTime : $sunSetTime")
-
-        correctMiddleDayTime = (sunSetTime - sunRiseTime) / 2 + sunRiseTime
+        correctMiddleDayTime = (sunSetTimeMillis + sunRiseTimeMillis) / 2
         delta = correctMiddleDayTime - MILLIS_IN_DAY / 2
         correctMiddleNightTime = delta
 
         Log.i(TAG, "correctmiddleDayTime : $correctMiddleDayTime\n correctmiddleNightTime : $correctMiddleNightTime")
+
+        sunRiseProgress = (sunRiseTime - delta).toDouble() / MILLIS_IN_DAY
+        Log.i(TAG, "sunRiseTime : $sunRiseTime")
+        sunSetProgress = (sunSetTime + delta).toDouble() / MILLIS_IN_DAY
+        Log.i(TAG, "sunSetTime : $sunSetTime")
 
         invalidate()
     }
@@ -317,7 +332,7 @@ class SunStateView : View {
     companion object {
         const val MILLIS_IN_DAY = 60 * 60 * 24 * 1000L
         const val SECONDS_PER_DAY = 60 * 60 * 24
-        const val TAG ="SunStateView"
+        private const val TAG ="SunStateView"
     }
 
 }

@@ -13,7 +13,7 @@
     <color name="background_transparent">#E6FFFFFF</color>
     <color name="background_main">#F6EDFF</color>
     <color name="weather_info_icon">#0082DF</color>
-    <color name="toolbar_color">#BF9FC1F4</color>
+    <color name="toolbar_color">#F21E3640</color>
     <color name="snackber_color">#B20082DF</color>
 
     <color name="agree_button_color">#0082DF</color>
@@ -21,6 +21,14 @@
     <color name="light_blue_400">#FF29B6F6</color>
     <color name="gray_400">#FFBDBDBD</color>
     <color name="gray_600">#FF757575</color>
+
+    <color name="clear_day_toolbar">#FF81D4FA</color>
+    <color name="clear_night_toolbar">#0C1524</color>
+    <color name="cloudy_night_toolbar">#0A1D35</color>
+    <color name="cloudy_day_toolbar">#4A717B</color>
+    <color name="cloudy_gray_toolbar">#B5B4B9</color>
+    <color name="thunder_night_toolbar">#111018</color>
+    <color name="thunder_day_toolbar">#282C2D</color>
 
 
     <color name="seed">#0082DF</color>

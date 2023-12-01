@@ -76,7 +76,7 @@ class HourlyForecastAdapter : BaseAdapter<HourInfoItemLayoutBinding, HourForecas
             dataset?.setDrawFilled(true)
             dataset?.setDrawValues(true)
 
-            dataset?.setDrawCircles(true)
+            dataset?.setDrawCircles(false)
             dataset?.setCircleColor(Color.GREEN)
             dataset?.circleRadius = 4f
             dataset?.circleHoleColor = Color.WHITE

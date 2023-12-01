@@ -1,57 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@color/transparent"
     android:focusableInTouchMode="true">
 
-    <ImageView
-        android:id="@+id/back_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp"
-        android:src="@drawable/back_button"
-        android:stateListAnimator="@animator/button_press_animator"
-        android:visibility="gone" />
+    <View
+        android:id="@+id/back_view"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"/>
 
-    <TextView
-        android:id="@+id/title_textView"
-        style="@style/body_medium"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:layout_weight="1"
-        android:text="Moscow, Russia"
-        android:layout_marginTop="16dp"/>
+        android:padding="16dp"
+        android:focusableInTouchMode="true">
 
-    <ImageView
-        android:id="@+id/add_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="24dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp"
-        android:src="@drawable/plus"
-        android:stateListAnimator="@animator/button_press_animator"
-        android:visibility="visible"
-        android:layout_marginTop="16dp"/>
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/back_button"
+            android:stateListAnimator="@animator/button_press_animator"
+            android:visibility="gone" />
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="16dp"
-        android:shadowColor="@color/light_blue_A200"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/title_textView"
+            android:padding="2dp"
+            style="@style/body_medium"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:lines="2"
+            android:text="Moscow, Russia"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"/>
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/add_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/plus"
+            android:stateListAnimator="@animator/button_press_animator"
+            android:visibility="visible"
+            android:layout_marginTop="16dp"/>
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:shadowColor="@color/light_blue_A200"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,5 +1,10 @@
 package ru.plovotok.weatherme.presentation.screens
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.LinkProperties
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -19,6 +24,8 @@ import ru.plovotok.weatherme.presentation.base.TypeOfPrecip
 class WeatherActivity : AppCompatActivity() {
 
     private var _binding: ActivityWeatherBinding? = null
+    private var connectivityManager: ConnectivityManager? = null
+    private var noNetworkFragment: NoNetworkFragment? = null
 
     val binding get() = _binding!!
 
@@ -29,6 +36,19 @@ class WeatherActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        enableNetworkCallback()
+
+        if (noNetworkFragment == null) {
+            noNetworkFragment = NoNetworkFragment()
+        }
+        if(!isInternetAvailable(this) && noNetworkFragment?.isVisible == false) {
+            noNetworkFragment?.isCancelable = false
+            noNetworkFragment?.show(supportFragmentManager, noNetworkFragment?.tag)
+        }
     }
 
     override fun onDestroy() {
@@ -61,8 +81,67 @@ class WeatherActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    fun setTimeImage(imageId : Int, precipType: TypeOfPrecip, rate : PrecipRate){
+    private fun isInternetAvailable(context: Context): Boolean {
+        val result: Boolean
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val actNw =
+            connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+        result = when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
 
+        return result
+    }
+
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+
+        override fun onAvailable(network: Network) {
+            noNetworkFragment?.also { fragment ->
+                if (fragment.isVisible)
+                    fragment.dismiss()
+            }
+
+            noNetworkFragment = null
+        }
+
+        override fun onLost(network: Network) {
+            if (noNetworkFragment == null) {
+                noNetworkFragment = NoNetworkFragment()
+            } else try { noNetworkFragment?.dismiss() } catch (_: Exception) {}
+
+            noNetworkFragment?.also { fragment ->
+                fragment.isCancelable = false
+
+                if (!fragment.isVisible)
+                    fragment.show(supportFragmentManager, fragment.tag)
+            }
+        }
+
+        override fun onCapabilitiesChanged(
+            network: Network,
+            networkCapabilities: NetworkCapabilities
+        ) {
+        }
+
+        override fun onLinkPropertiesChanged(
+            network: Network,
+            linkProperties: LinkProperties
+        ) {
+        }
+    }
+
+    private fun enableNetworkCallback() {
+        noNetworkFragment?.isCancelable = false
+        connectivityManager = this.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager?.registerDefaultNetworkCallback(networkCallback)
+    }
+
+    fun setTimeImage(imageId : Int, precipType: TypeOfPrecip, rate : PrecipRate){
 
         Glide.with(this)
             .load(imageId)

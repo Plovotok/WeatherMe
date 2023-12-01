@@ -5,6 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.ChanceOfPrecipitaion
 import ru.plovotok.weatherme.presentation.base.viewhelperclasses.HourForecast
+import kotlin.math.max
 
 @Serializable
 data class HourWeatherDTO(
@@ -32,13 +33,16 @@ data class HourWeatherDTO(
     @SerializedName("chance_of_rain")
     @SerialName("chance_of_rain")
     val chanceOfRain : Double,
+    @SerializedName("chance_of_snow")
+    @SerialName("chance_of_snow")
+    val chanceOfSnow : Double,
     @SerializedName("uv")
     val uv : Double
 ) {
     fun toChancesOfPrecipitation() = ChanceOfPrecipitaion(
         timeEpoch = timeEpoch,
         time = time.split(" ").last(),
-        chance = chanceOfRain
+        chance = max(chanceOfRain, chanceOfSnow)
     )
 
     fun toHourForecast() = HourForecast(

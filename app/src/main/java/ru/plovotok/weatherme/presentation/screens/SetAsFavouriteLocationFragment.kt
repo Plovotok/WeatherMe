@@ -17,7 +17,9 @@ class SetAsFavouriteLocationFragment(private val location : LocationResponse, pr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textView.text = "Set ${location.name} as default location?"
+        val setText = resources.getString(R.string.set)
+        val byDefaultText = resources.getString(R.string.by_default)
+        binding.textView.text = "$setText ${location.name} $byDefaultText?"
 
         binding.agreeButton.button.text = resources.getString(R.string.yes)
         binding.agreeButton.button.backgroundTintList =
