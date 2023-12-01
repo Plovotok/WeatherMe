@@ -1,11 +1,16 @@
 # WeatherMe
 Android weather application with current weather and forecast
-# Screenshots and recordings
+# Screenshots
 
-<img src="/media/weather_fragment_screenshot.png" width="400"/> <img src="/media/add_location_fragment_screenshot.png" width="400"/> <img src="/media/widget.png" width="400"/> 
+<img src="/media/weather_fragment_screenshot.png" width="400"/> <img src="/media/add_location_fragment_screenshot.png" width="400"/> 
 
 # Recording
 <img src="/media/weather_fragment_rec.gif" width="400" />
+
+## Widget
+
+<img src="/media/widget.png" width="400"/> 
+
 # Installation
 
 clone repository using git clone:
