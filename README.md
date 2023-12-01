@@ -2,12 +2,12 @@
 Android weather application with current weather and forecast
 # Screenshots and recordings
 
-![weather_fragment_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/weather_fragment_screenshot.png)
-![add_location_fragment_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/add_location_fragment_screenshot.png)
-![widget_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/widget.png)
+![weather_fragment_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/media/weather_fragment_screenshot.png)
+![add_location_fragment_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/media/add_location_fragment_screenshot.png)
+![widget_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/media/widget.png)
 
 # Recording
-![screen_recording](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/recs/weather_fragment_rec.gif)
+![screen_recording](https://github.com/Plovotok/WeatherMe/tree/master/media/weather_fragment_rec.gif)
 
 # Installation
 
@@ -18,7 +18,7 @@ git clone https://github.com/Plovotok/WeatherMe.git
 
 # Configuration
 Step 2. Paste your weatherapi.com API-key and MapTiler API_key
-![weather_api_logo](https://cdn.weatherapi.com/v4/images/weatherapi_logo.png)
+
 <a href="https://https://cdn.weatherapi.com"> <img src="https://cdn.weatherapi.com/v4/images/weatherapi_logo.png">
 </a>
 MapTiler: https://cloud.maptiler.com
