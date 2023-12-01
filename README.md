@@ -2,9 +2,9 @@
 Android weather application with current weather and forecast
 # Screenshots and recordings
 
-![weather_fragment_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/weather_fragment_screenshot)
-![add_location_fragment_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/add_location_fragment_screenshot)
-![widget_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/widget)
+![weather_fragment_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/weather_fragment_screenshot.png)
+![add_location_fragment_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/add_location_fragment_screenshot.png)
+![widget_screenshot](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/screenshots/widget.png)
 
 # Recording
 ![screen_recording](https://github.com/Plovotok/WeatherMe/tree/master/app/src/main/assets/recs/weather_fragment_rec.gif)
