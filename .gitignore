@@ -12,4 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+/app/src/main/assets
+/app/src/main/java/ru/plovotok/weatherme/presentation/base/Constants.kt
 local.properties
