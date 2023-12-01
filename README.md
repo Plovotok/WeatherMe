@@ -14,11 +14,13 @@ git clone https://github.com/Plovotok/WeatherMe.git
 ```
 
 # Configuration
-Step 2. Paste your weatherapi.com API-key and MapTiler API_key
+Step 2. Paste your weatherapi.com API-key and MapTiler API-key
 
 <a href="https://https://cdn.weatherapi.com"> <img src="https://cdn.weatherapi.com/v4/images/weatherapi_logo.png">
 </a>
+
 MapTiler: https://cloud.maptiler.com
+
 Find object Constants:
 ```
 const val API_KEY = "YOUR_WEATHER_API_KEY"
