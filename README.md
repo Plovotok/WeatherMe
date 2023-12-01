@@ -5,7 +5,7 @@ Android weather application with current weather and forecast
 <img src="/media/weather_fragment_screenshot.png" width="400"/> <img src="/media/add_location_fragment_screenshot.png" width="400"/> <img src="/media/widget.png" width="400"/> 
 
 # Recording
-
+<img src="/media/weather_fragment_rec.gif" />
 # Installation
 
 clone repository using git clone:
@@ -21,13 +21,13 @@ Step 2. Paste your weatherapi.com API-key and MapTiler API_key
 MapTiler: https://cloud.maptiler.com
 Find object Constants:
 ```
-    const val API_KEY = "YOUR_WEATHER_API_KEY"
-    const val MAP_TILER_KEY = "YOUR_MAPTILER_KEY"
+const val API_KEY = "YOUR_WEATHER_API_KEY"
+const val MAP_TILER_KEY = "YOUR_MAPTILER_KEY"
 ```
 
 Also find html-files inside assets folder and replace
 ```
-    maptilersdk.config.apiKey = 'YOUR_MAPTILER_KEY';
+maptilersdk.config.apiKey = 'YOUR_MAPTILER_KEY';
 ```
 
 # Start
