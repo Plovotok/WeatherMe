@@ -41,7 +41,12 @@ maptilersdk.config.apiKey = 'YOUR_MAPTILER_KEY';
 # Start
 Run the app and add your favourite location by click '+' button. By default Moscow location is being used
 
-# Libraries
+# Design and technologies
+
+## Design
+[👉 Design idea 👈](https://github.com/PhilJay/MPAndroidChart)
+
+## Libraries
 - Ktor-client
 - Room
 - Hilt
@@ -51,6 +56,12 @@ Run the app and add your favourite location by click '+' button. By default Mosc
 - [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
 - [WeatherView](https://github.com/MatteoBattilana/WeatherView)
 - [Bouncy](https://github.com/valkriaine/Bouncy)
+
+## Custom View
+- [SunStateView](https://github.com/Plovotok/WeatherMe/blob/master/app/src/main/java/ru/plovotok/weatherme/presentation/custom/SunStateView.kt)
+
+## Home Widget
+- [HomeWeatherWidget](https://github.com/Plovotok/WeatherMe/blob/master/app/src/main/java/ru/plovotok/weatherme/widget/HomeWeatherWidget.kt)
 
 # License
 ```
