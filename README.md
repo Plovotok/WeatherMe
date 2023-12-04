@@ -19,7 +19,7 @@ git clone https://github.com/Plovotok/WeatherMe.git
 ```
 
 # Configuration
-Step 2. Paste your weatherapi.com API-key and MapTiler API-key
+Step 2. Create and paste your weatherapi.com API-key and MapTiler API-key
 
 <a href="https://www.weatherapi.com/"> <img src="https://cdn.weatherapi.com/v4/images/weatherapi_logo.png">
 </a>
@@ -40,6 +40,18 @@ maptilersdk.config.apiKey = 'YOUR_MAPTILER_KEY';
 
 # Start
 Run the app and add your favourite location by click '+' button. By default Moscow location is being used
+
+# Libraries
+- Ktor-client
+- Room
+- Hilt
+- Navigation Component
+- Lottie
+- Glide
+- [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+- [WeatherView](https://github.com/MatteoBattilana/WeatherView)
+- [Bouncy](https://github.com/valkriaine/Bouncy)
+
 # License
 ```
 Copyright 2023 Eugene Plovotok
