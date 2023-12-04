@@ -44,7 +44,7 @@ Run the app and add your favourite location by click '+' button. By default Mosc
 # Design and technologies
 
 ## Design
-[👉 Design idea 👈](https://github.com/PhilJay/MPAndroidChart)
+[👉 Design idea 👈](https://www.figma.com/community/file/1249443729401540968/google-weather-app-redesign)
 
 ## Libraries
 - Ktor-client
